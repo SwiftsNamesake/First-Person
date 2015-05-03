@@ -1,0 +1,66 @@
+/* Fonts */
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,400italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500,700,300italic,400italic);
+@import url(http://fonts.googleapis.com/css?family=Amatic+SC:400,700);
+
+h1 {
+	font-size: 28px;
+	margin: 5px;
+	display: block;
+	text-align: center;
+}
+
+#I {
+	font-family: "Telgrafico"
+}
+
+#II {
+	font-family: "Bradley Hand ITC";
+}
+
+#III {
+	font-family: "Headline";
+}
+
+p {
+	font-family: "Amatic Sc";
+	font-size: 24px;
+	margin: 5px;
+	display: block;
+	text-align: center;
+}
+
+canvas {
+	border: none;
+	padding: none;
+	margin: auto;
+	display: block;
+	/*background-color: blue;*/
+}
+
+#backgroundSettings {
+	list-style-type: none;
+	float: left;
+	vertical-align: middle;
+}
+
+#rotationSettings {
+	list-style-type: none;
+	float: left;
+	vertical-align: middle;
+}
+
+#debug {
+	list-style-type: none;
+	float: left;
+	vertical-align: middle;
+}
+
+#icon {
+	width: 200px;
+	height: 200px;
+	border: 20px solid rgba(20, 55, 175, 0.3);
+	background-color: rgba(0, 200, 80, 0.9);
+	border-radius: 25%;
+	box-shadow: 1px 1px 3px #292929;
+}
