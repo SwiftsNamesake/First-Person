@@ -1,23 +1,24 @@
 /*
+ *
+ * FirstPerson.js
+ * My first attempt at creating a first-person
+ * 
+ * Jonatan Sundqvist
+ * January 3 2014
+ *
+ * Interactive experience using WebGL
+ *
+ * SPEC | 
+ *
+ * TODO | 
+ *
+ */
 
-	AUTH: Jonatan Sundqvist
-	DATE: January 3 2014
 
-	NAME: FirstPerson.js
-	DESC: My first attempt at creating a first-person
-	interactive experience using WebGL
 
-	===== ===== ===== ===== ===== ===== ===== ===== =====
-
-	SPEC | 
-
-	TODO | 
-
-	*/
-
-	/* Global variables (should be kept to a minimum) */
-	var gl;
-	var shaderProgram;
+/* Global variables (should be kept to a minimum) */
+var gl;
+var shaderProgram;
 
 var pMatrix = mat4.create(); 	// Perspective matrix
 var mvMatrix = mat4.create();	// Model-view matrix 
@@ -45,8 +46,8 @@ function InitUserInterface() {
 	var debug = document.getElementById('debug');
 
 	/* Colour */
-	var colSliders = comprehension('RGB', document.getElementById.bind(document));
-	var colValues = comprehension(['valR', 'valG', 'valB'], document.getElementById.bind(document));
+	var colSliders = 'RGB'.map(document.getElementById.bind(document));
+	var colValues  = ['valR', 'valG', 'valB'].map(document.getElementById.bind(document));
 	
 	/* Rotation */
 	var rotSliders = comprehension('XYZ', document.getElementById.bind(document));
@@ -57,7 +58,9 @@ function InitUserInterface() {
 			bkg[i] = colSliders[i].value / 100.0;
 			colValues[i].innerHTML = colSliders[i].value.toString() + '%';
 		};
+
 		gl.clearColor(bkg[0], bkg[1], bkg[2], 1.0);
+
 	}
 
 	function onRotationSliderChanges() {
@@ -79,8 +82,8 @@ function InitUserInterface() {
 			var y = e.clientY - bounds.top;
 			
 			/* The canvas' centre coordinates */
-			var midX = this.width/2;
-			var midY = this.height/2;
+			var midX = this.width  / 2;
+			var midY = this.height / 2;
 
 			/* Distance from canvas centre */
 			var dx = x - midX;
@@ -146,16 +149,14 @@ function InitShaders(onloaded) {
 	
 	// TODO: Find a way to get rid of callback chain (elegant asynchronicity)
 	// TODO: Find a way to load both shaders in parallel
-	loadShader(gl, 'http://localhost:8000/WebGL/First%20Person/pixelshader.txt', 'p', function (pixelShader) {
-		loadShader(gl, 'http://localhost:8000/WebGL/First%20Person/vertexshader.txt', 'v', function(vertexShader) {
+	loadShader(gl, 'http://localhost:8000/Web%20Dev/WebGL/First%20Person/pixelshader.txt', 'p', function (pixelShader) {
+		loadShader(gl, 'http://localhost:8000/Web%20Dev/WebGL/First%20Person/vertexshader.txt', 'v', function(vertexShader) {
 			shaderProgram = gl.createProgram();
 			gl.attachShader(shaderProgram, vertexShader);
 			gl.attachShader(shaderProgram, pixelShader);
 			gl.linkProgram(shaderProgram);
 
-			if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-				console.log('Could not initialize shaders');
-			}
+			if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) { console.log('Could not initialize shaders'); }
 
 			gl.useProgram(shaderProgram);
 
@@ -218,7 +219,7 @@ function loadShader (gl, URI, type, onloaded) {
 			console.error('Unable to load shader from file. Status: ' + status.toString());
 			return null;
 		} else {
-			console.log('Shader loaded successfully.')
+			console.log('Shader loaded successfully.');
 		}
 
 		/* Create GL shader from the source */
@@ -492,21 +493,21 @@ this.createCube = function (type) {
 		[0.0, 0.7, 0.5, 1.0]];
 
 	var vertices = [
-			v['RBF'], v['LBF'], v['LTF'], v['RBF'], v['LTF'], v['RTF'], // Front face
-			v['RBB'], v['LBB'], v['LTB'], v['RBB'], v['LTB'], v['RTB'], // Back face
-			v['LBF'], v['LTF'], v['LBB'], v['LTF'], v['LBB'], v['LTB'], // Left face
-			v['RBF'], v['RTF'], v['RBB'], v['RTF'], v['RBB'], v['RTB'], // Right face
-			v['LTF'], v['RTF'], v['LTB'], v['RTF'], v['LTB'], v['RTB'], // Top face
-			v['LBF'], v['RBF'], v['LBB'], v['RBF'], v['LBB'], v['RBB'] // Bottom face
-			];
+		v['RBF'], v['LBF'], v['LTF'], v['RBF'], v['LTF'], v['RTF'], // Front face
+		v['RBB'], v['LBB'], v['LTB'], v['RBB'], v['LTB'], v['RTB'], // Back face
+		v['LBF'], v['LTF'], v['LBB'], v['LTF'], v['LBB'], v['LTB'], // Left face
+		v['RBF'], v['RTF'], v['RBB'], v['RTF'], v['RBB'], v['RTB'], // Right face
+		v['LTF'], v['RTF'], v['LTB'], v['RTF'], v['LTB'], v['RTB'], // Top face
+		v['LBF'], v['RBF'], v['LBB'], v['RBF'], v['LBB'], v['RBB']  // Bottom face
+	];
 
-		var colours = [];//vertices.map(function (v) { return v[0]==0.0?c[0]:c[1]; });
+	var colours = [];//vertices.map(function (v) { return v[0]==0.0?c[0]:c[1]; });
 		
-		for (var i = 0; i < 6; i++) {
-			colours.push(c[i], c[i], c[i], c[i], c[i], c[i]);
-		}
+	for (var i = 0; i < 6; i++) {
+		colours.push(c[i], c[i], c[i], c[i], c[i], c[i]);
+	}
 
-		return ({ 'vertex': vertices, 'colour': colours}[type]).flatten();
+	return ({ 'vertex': vertices, 'colour': colours}[type]).flatten();
 
 	}
 

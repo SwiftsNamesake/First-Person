@@ -10,17 +10,21 @@ h1 {
 	text-align: center;
 }
 
+
 #I {
-	font-family: "Telgrafico"
+	font-family: "Telgrafico";
 }
+
 
 #II {
 	font-family: "Bradley Hand ITC";
 }
 
+
 #III {
 	font-family: "Headline";
 }
+
 
 p {
 	font-family: "Amatic Sc";
@@ -30,6 +34,7 @@ p {
 	text-align: center;
 }
 
+
 canvas {
 	border: none;
 	padding: none;
@@ -38,11 +43,13 @@ canvas {
 	/*background-color: blue;*/
 }
 
+
 #backgroundSettings {
 	list-style-type: none;
 	float: left;
 	vertical-align: middle;
 }
+
 
 #rotationSettings {
 	list-style-type: none;
@@ -50,11 +57,13 @@ canvas {
 	vertical-align: middle;
 }
 
+
 #debug {
 	list-style-type: none;
 	float: left;
 	vertical-align: middle;
 }
+
 
 #icon {
 	width: 200px;
