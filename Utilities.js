@@ -1,18 +1,19 @@
 /*
-	
-	NAME: Utilities.js
-	DESC: Assorted functional goodness
+ * Utilities.js
+ * Assorted functional goodness
+ *
+ * Jonatan H. Sundqvist
+ * March 26 2014
+ *
 
-	AUTH: Jonatan H. Sundqvist
-	DATE: March 26 2014
+ * TODO | - Wrap in 'namespace object' (?)
+ *        - 
 
-	==========================================
-	
-	SPEC | 
+ * SPEC | -
+ *        -
+ *
+ */
 
-	TODO | 
-
-*/
 
 
 /* Mathematical constants */

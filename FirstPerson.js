@@ -7,11 +7,15 @@
  * January 3 2014
  *
  * Interactive experience using WebGL
- *
- * SPEC | 
- *
- * TODO | 
- *
+ 
+ * SPEC | -
+ *        -
+ 
+ * TODO | - Break up functionality into several scripts
+ *          -- Matrix math (role my own or stick with mat4?)
+ *          -- Shaders
+ *          -- OpenGL boilerplate (context, configurations, etc.)
+ 
  */
 
 
