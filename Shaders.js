@@ -7,8 +7,9 @@
  * 
 
  * TODO | - Promises
- *        - Logging, timing, profiling
+ *        - Logging (allow toggle), timing, profiling
  *        - Separate request IO from WebGL logic
+ *        - Toggle async
 
  * SPEC | -
  *        -
@@ -24,24 +25,37 @@ var shaders = (function() {
 
 	var shaders = {};
 
+	// Configurations
+	shaders.DEBUG = false;
+
+	// TODO: Allow changing at runtime (?)
+	// TODO: Use logging library instead (?)
+	if (shaders.DEBUG) {
+		shaders.log = console.log.bind(console);
+	} else {
+		shaders.log = function() {};
+	}
+
+	// Methods
 	shaders.load = function(context, path, type) {
 		// Loads the specified file asynchronously and creates a WebGL shader from it.
 		// TODO: How does the complete callback interact with the promise interface of $.ajax (?)
-		console.log('Attempting to load shader.')
+		shaders.log('Attempting to load shader.');
 		return $.ajax(path, {
 			async: true, //
 			// complete: function(xhr, status) { return shaders.oncomplete(xhr, status, context, type); }, // 
 			// error:    function(xhr, status, exception) { return shaders.onerror; } // 
 		}).then(function(xhr, status)            { return shaders.oncomplete(xhr, status, context, type); },
-		        function(xhr, status, exception) { return shaders.onerror; });
+		        function(xhr, status, exception) { return shaders.onerror; }); // TODO: Rename xhr to response (?)
 	};
 
 
 	shaders.oncomplete = function(xhr, status, context, type) {
 		// Handles a single completed shader request (which may have failed)
 		if (status == 'success') {
-			console.log('Successfully loaded shader.')
-			return shaders.create(context, xhr.responseText, type);
+			shaders.log('Successfully loaded shader.')
+			shaders.log(typeof xhr); // Seems to be string (not xhr)
+			return shaders.create(context, xhr, type);
 		} else {
 			console.error('Failed to load shader.');
 			return undefined; // TODO
@@ -60,8 +74,8 @@ var shaders = (function() {
 		// TODO: Better logging and error handling
 		try {
 			// TODO: Allow other shader type options (eg. synonyms and abbreviations) (?)
-			console.log('Creating shader.');
-			console.log(source);
+			shaders.log('Creating shader.');
+			shaders.log(source);
 			var shader = context.createShader({'vertex': context.VERTEX_SHADER, 'pixel': context.FRAGMENT_SHADER}[type]);
 
 			/* Compile and verify */
@@ -71,6 +85,7 @@ var shaders = (function() {
 			if (!context.getShaderParameter(shader, context.COMPILE_STATUS)) {
 				console.error('Faulty compile status'); // TODO: Better message
 				console.error(context.getShaderInfoLog(shader));
+				return undefined;
 			}
 
 			return shader;
@@ -85,8 +100,9 @@ var shaders = (function() {
 		// Creates a new shader program with the given vertex and pixel shaders
 		// TODO: Return promise (?)
 		// TODO: Allow either source or path as vertex/fragment arguments
-		console.log('Creating shader program');
-		console.log(vertexshader, pixelshader);
+		// TODO: Handle potential errors (?)
+		shaders.log('Creating shader program');
+		shaders.log(vertexshader, pixelshader);
 		var program = context.createProgram();
 		context.attachShader(program, vertexshader);
 		context.attachShader(program, pixelshader);
@@ -99,11 +115,11 @@ var shaders = (function() {
 		//
 		// TODO: Handle potential errors
 		return $.when(shaders.load(context, pathvertex, 'vertex'), shaders.load(context, pathpixel, 'pixel')).then(function(vertexshader, pixelshader) {
-			// console.log(vertexshader instanceof String, pixelshader instanceof String);
+			// shaders.log(vertexshader instanceof String, pixelshader instanceof String);
 			return shaders.program(context, vertexshader, pixelshader);
 		});
 	}
 
 	return shaders;
 
-}())
+}());
