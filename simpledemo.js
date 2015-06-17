@@ -26,12 +26,13 @@ $(document).ready(function() {
 	var modelview  = mat4.create(); //
 	var projection = mat4.create(); //
 	
-	var vertices = createBuffer(context, [[-1, 0, 0],
-		                                  [ 0, 2, 0],
-		                                  [ 1, 0, 0]].flatten(), 3);
-	var colours  = createBuffer(context, [[ 1, 0, 0, 1],
-		                                  [ 1, 0, 0, 1],
-		                                  [ 1, 1, 0, 1]].flatten(), 4);
+	var vertices = createBuffer(context, [[-1.00,  0.00,  0.00],
+		                                  [ 0.00,  2.00, -0.25],
+		                                  [ 1.00,  0.00,  0.00]].flatten(), 3);
+
+	var colours  = createBuffer(context, [[  0.00,  1.00,  0.00,  1.00],
+		                                  [  1.00,  0.00,  0.00,  1.00],
+		                                  [  1.00,  1.00,  0.00,  1.00]].flatten(), 4);
 
 	// var program = 
 	shaders.programFromSourceFiles(context, 'vertexshader.txt', 'pixelshader.txt').then(function(program) {
