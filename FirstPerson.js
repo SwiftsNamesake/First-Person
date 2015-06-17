@@ -64,7 +64,7 @@ function InitUserInterface(context) {
 
 	function onRotationSliderChanges() {
 		for (var i = 0; i < rotSliders.length; i++) {
-			pyramidMesh.r[i] = rad(rotSliders[i].value);
+			pyramidMesh.rotation[i] = rad(rotSliders[i].value);
 			rotValues[i].innerHTML = rotSliders[i].value.toString() + '&deg;';
 		};
 	}
@@ -95,8 +95,8 @@ function InitUserInterface(context) {
 			//pyramidMesh.ω[1] = 2*(dx / midX);
 			//pyramidMesh.ω[0] = 2*(dy / midY);
 
-			pyramidMesh.r[1] = π*(dx / midX);
-			pyramidMesh.r[0] = π*(dy / midY);
+			pyramidMesh.rotation[1] = π*(dx / midX);
+			pyramidMesh.rotation[0] = π*(dy / midY);
 
 		}
 	}
@@ -126,24 +126,19 @@ function InitWorld(context) {
 	/* Hurry up and fill the buffers, you idle buffoon! */
 
 	/* Experimental */
-	pyramidMesh = new Mesh(context, '', 0, 0, -5);
-	pyramidMesh.ω = [ 0.0, 0.3, 0.0 ];
-	//pyramidMesh.setVelocity(0.0, 0.0, -5.0);
-	//pyramidMesh.ω = [0.0, rad(20.0), rad(180.0)];
+	pyramidMesh = new Mesh(context, shapes.cube(2.3), [0, 0, -5]);
 
-	anotherMesh = new Mesh(context, '', -2, 1, -2);
-	anotherMesh.setVelocity(0.0, -0.2, -0.4);
-	anotherMesh.ω = [ 0.0, 0.3, 0.0 ];
+	var anotherMesh = new Mesh(context, shapes.cube(1.0), [-2, 1, -2]);
 
 	for (var i = -4; i < 4; i++) {
-		mesh = new Mesh(context, '', i, 0, -7);
-		mesh.setVelocity(0.0, -0.4, 0.0);
-		mesh.setRotation(0.0, 0.0, rad(45.0));
-		mesh.ω = [0.0, 2.0, 0.0];
-		scene.push(mesh);
+		var mesh = new Mesh(context, shapes.cube(0.35), [i, 0, -7]);
+		scene.push({mesh: mesh, body: new Body(1.0, [i, 0, -7], [0.0, 0.0, rad(45.0)], [0.0, -0.4, 0.0], [0.0, 0.0, 0.0], [0.0, 2.0, 0.0], mesh)});
 	}
 
-	scene.push(pyramidMesh, anotherMesh); // Add the meshes to the scene
+	// Add the meshes to the scene
+	//                                            mass  position        rotation          velocity        acceleration       angular       connected
+	scene.push({mesh: pyramidMesh, body: new Body(1.0, [0, 0, -5],  [0.0, 0.0, 0.0], [0.0,  0.0, -5.0], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], pyramidMesh)},
+	           {mesh: anotherMesh, body: new Body(1.0, [-2, 1, -2], [0.0, 0.0, 0.0], [0.0, -0.2, -0.4], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], anotherMesh)});
 
 }
 
@@ -205,7 +200,7 @@ function createRenderer(context, modelview, projection) {
 
 		/* Draw the meshes */
 		for (var i = 0; i < scene.length; i++) {
-			scene[i].draw(modelview, projection);
+			scene[i].mesh.render(modelview, projection);
 		};
 
 	}
@@ -225,7 +220,7 @@ function tick () {
 	//pyramidMesh.translate(0.0, 0.0, -10*dt/1000.0);
 	
 	for (var i = 0; i < scene.length; i++) {
-		scene[i].animate(dt);
+		scene[i].body.animate(dt);
 	}
 
 }

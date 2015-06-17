@@ -21,13 +21,20 @@ var shapes = (function() {
 	//
 	var shapes = {};
 
+	var somecolours = {'top':    [1.00, 0.00, 0.00, 1.00],
+					   'bottom': [0.00, 1.00, 0.00, 1.00],
+					   'front':  [0.00, 0.00, 1.00, 1.00],
+					   'back':   [0.50, 0.00, 0.00, 1.00],
+					   'left':   [0.00, 0.50, 0.00, 1.00],
+					   'right':  [0.00, 0.00, 0.50, 1.00]};
 
 	shapes.cube = function(side, palette) {
 
 		//
 		// (L|R T|B F|B) => (Left|Right Top|Bottom Front|Back)
 		// TODO: Which direction does the Z axis go in (into screen our away from screen)?
-		var half = side/2;
+		var half    = side/2;
+		var palette = palette || somecolours; //
 
 		var unique = [[-half,  half, -half],  // LTF (0)
 					  [-half,  half,  half],  // LTB (1)
@@ -54,6 +61,10 @@ var shapes = (function() {
 		return { vertices: vertices.flatten(), colours: colours.flatten() }; // TODO: Decide whether to concat buffers or keep them as they are
 
 	};
+
+
+	return shapes;
+
 
 
 }());

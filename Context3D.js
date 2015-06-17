@@ -109,7 +109,8 @@ var Context3D = function(canvas) {
 		var buffer = this.context.createBuffer();
 		buffer.itemsize = itemsize;
 		buffer.size     = data.length / buffer.itemsize;
-
+		console.log(data);
+		
 		this.context.bindBuffer(this.context.ARRAY_BUFFER, buffer);
 		this.context.bufferData(this.context.ARRAY_BUFFER, new Float32Array(data), this.context.STATIC_DRAW);
 
