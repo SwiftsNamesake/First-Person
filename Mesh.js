@@ -1,13 +1,25 @@
 /*
  * Mesh.js
- * ?
+ * Encapsulates a set of buffers and attributes needed to render a single mesh.
  *
  * None
  * June 17 2015
  *
 
- * TODO | - 
- *        - 
+ * TODO | - Custom shaders (?)
+ *        - Load from file (cf. WaveFront)
+ *        - Change geometry at runtime
+ *        - Textures and materials
+ *        - Index buffers
+ *        - Separate physics attributes/logic (eg. create a Body type)
+ *        - Queries, metadata (volume, collisions, boolean operations, contours, etc.)
+ *
+ *        - Inheritance
+ *          -- Common solids and 2D shapes (triangle, rectangle, block, cube, sphere, cone, cylinder, dodecahedron, etc.)
+ *
+ *        - Robustness
+ *          -- Logging and debugging
+ *          -- Type-checking, function signatures
 
  * SPEC | -
  *        -
@@ -16,10 +28,7 @@
 
 
 
- var Mesh = function (context, shape, x, y, z) {
-
- 	/* TODO: Passing vectors as arguments */
- 	/* ISSUE: How to manage external data (eg. scene, transformation matrix) */
+ var OldMesh = function (context, shape, x, y, z) {
 
  	/* Geometry methods */
  	this.initBufferData = function (type) {
@@ -181,139 +190,35 @@
 	}
 
 
-
-	this.initBuffer = function (type, array) {
-
-		/* Initializes the OpenGL buffers with our vertex and colour data */
-		/* TODO: Textures */
-		return context.createBuffer(array || {'vertex': this.vertices, 'colour': this.colours}[type], {'vertex': 3, 'colour': 4}[type])
-
-	}
-
-
-
-	/* Surface methods */
-	this.addColour = function (rgb) {
-		
-	}
-
-
-
-	this.addTexture = function (path) {
-		
-	}
-	
-
-
-	/* Physics and animation methods */
-	this.rotate = function (x, y, z) {
-		this.r[0] += x;
-		this.r[1] += y;
-		this.r[2] += z;
-	}
-
-
-
-	this.translate = function (x, y, z) {
-		this.p[0] += x;
-		this.p[1] += y;
-		this.p[2] += z;
-	}
-
-
-
-	this.accelerate = function (x, y, z) {
-		this.v[0] += x;
-		this.v[1] += y;
-		this.v[2] += z;
-	}
-
-
-
-	this.moveTo = function (x, y, z) {
-		this.p = [x, y, z]
-	}
-
-
-
-	this.setAcceleration = function (x, y, z) {
-		this.a = [x, y, z];
-	}
-
-
-
-	this.setVelocity = function (x, y, z) {
-		this.v = [x, y, z];
-	}
-
-
-
-	this.setRotation = function (x, y, z) {
-		this.r = [x, y, z];
-	}
-
-
-
-	this.animate = function (seconds) {
-		/* Animates the mesh based on its velocity (v), acceleration (a) and angular velocity (ω) */
-		this.accelerate(this.a[0]*seconds, this.a[1]*seconds, this.a[2]*seconds);
-		this.translate(this.v[0]*seconds, this.v[1]*seconds, this.v[2]*seconds);
-		this.rotate(this.ω[0]*seconds, this.ω[1]*seconds, this.ω[2]*seconds);
-	}
-
-
-
-	this.draw = function (modelview, projection) {
-
-		/* Renders the mesh */
-		context.renderVertices(this.vertexBuffer, this.colourBuffer, this.r, this.p, modelview, projection);
-
-		// Draw contours
-		//context.bindBuffer(context.ARRAY_BUFFER, this.contourColourBuffer);
-		//context.vertexAttribPointer(program.vertexColourAttribute, this.colourSize, context.FLOAT, false, 0, 0);
-		//context.drawArrays(this.LINE_STRIP, 0, this.vertexNumber);
-
-	}
-
-
-
-	/* Motion */
-	this.p = [x, y, z];			/* Position (units) */
-	this.r = [0.0, 0.0, 0.0];	/* Rotation (radians) */
-	this.v = [0.0, 0.0, 0.0];	/* Velocity (units per second) */
-	this.a = [0.0, 0.0, 0.0];	/* Acceleration (units per second per second) */
-	this.ω = [0.0, 0.0, 0.0];	/* Angular velocity (radians per second) */
-	
-	/* Physics */
-	this.m = 1.0;
-
-	/* Array buffers */
-	this.vertices 	= this.createCube('vertex');//this.createMesh('vertex');	//this.initBufferData('vertex');
-	this.colours 	= this.createCube('colour');//this.createMesh('colour');	//this.initBufferData('colour');
-	this.texture 	= undefined;
-
-	/* Contours */
-	this.contourColours  = this.createMesh('colour', true);	//this.initBufferData('colour');
-	this.contourColourBuffer = this.initBuffer('colour', this.contourColours);
-
-	/* OpenGL buffers */
-	this.vertexBuffer 	= this.initBuffer('vertex');
-	this.colourBuffer	= this.initBuffer('colour');
-	this.textureBuffer 	= undefined;
-
-	/* Settings */
-	/* ISSUE: Dealing with index arrays */
-	/* ISSUE: How to acquire GL context */
-	this.primitive = [context.TRIANGLES, context.TRIANGLE_STRIP, context.LINE_STRIP, context.LINES][0];
-	this.vertexSize = 3; 			/* Items per vertex in the vertex array */
-	this.colourSize = 4; 			/* Items per colour in the colour array */
-	//this.textureSize = undefined;
-	//this.vertexSize = 3;
-	this.vertexNumber = this.vertices.length / this.vertexSize;
-	
-	/* Shaders */
-	this.useCustomShaders = false;
-	this.vShader = undefined;
-	this.pShader = undefined;
-
 };
+
+
+
+var Mesh = function(context, data, position, rotation) {
+
+	//
+	// var texture = context.createBuffer(data.texture, 2)
+	var vertices = context.createBuffer(data.vertices, 3); //
+	var colours  = context.createBuffer(data.colours,  4); //
+
+	var primitive = context.context.TRIANGLES; // Triangles by default
+
+	var position = position || [0.0, 0.0, 0.0];
+	var rotation = rotation || [0.0, 0.0, 0.0];
+
+
+	// Physics and animation
+	// this.r = [0.0, 0.0, 0.0]; /* Rotation (radians) */
+	// this.v = [0.0, 0.0, 0.0]; /* Velocity (units per second) */
+	// this.a = [0.0, 0.0, 0.0]; /* Acceleration (units per second per second) */
+	// this.ω = [0.0, 0.0, 0.0]; /* Angular velocity (radians per second) */
+	
+	// this.m = 1.0;
+
+
+	this.render = function(modelview, projection) { context.renderVertices(this.vertices, this.colours, this.rotation, this.position, modelview, projection); }
+
+	// this.addColour = function (rgb) {}
+	// this.addTexture = function (path) {}
+
+}

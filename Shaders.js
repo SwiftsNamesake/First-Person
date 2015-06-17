@@ -36,7 +36,8 @@ var shaders = (function() {
 		shaders.log = function() {};
 	}
 
-	// Methods
+
+
 	shaders.load = function(context, path, type) {
 		// Loads the specified file asynchronously and creates a WebGL shader from it.
 		// TODO: How does the complete callback interact with the promise interface of $.ajax (?)
@@ -48,6 +49,7 @@ var shaders = (function() {
 		}).then(function(xhr, status)            { return shaders.oncomplete(xhr, status, context, type); },
 		        function(xhr, status, exception) { return shaders.onerror; }); // TODO: Rename xhr to response (?)
 	};
+
 
 
 	shaders.oncomplete = function(xhr, status, context, type) {
@@ -63,10 +65,13 @@ var shaders = (function() {
 	}
 
 
+
 	shaders.onerror = function(xhr, status, exception) {
 		// TODO: Proper logging and error handling
 		console.error('Someone messed up badly.');
+		console.error(xhr, status, exception);
 	}
+
 
 
 	shaders.create = function(context, source, type) {
@@ -112,12 +117,14 @@ var shaders = (function() {
 
 
 	shaders.programFromSourceFiles = function(context, pathvertex, pathpixel) {
+
 		//
 		// TODO: Handle potential errors
 		return $.when(shaders.load(context, pathvertex, 'vertex'), shaders.load(context, pathpixel, 'pixel')).then(function(vertexshader, pixelshader) {
 			// shaders.log(vertexshader instanceof String, pixelshader instanceof String);
 			return shaders.program(context, vertexshader, pixelshader);
 		});
+		
 	}
 
 	return shaders;

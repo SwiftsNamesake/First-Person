@@ -7,7 +7,8 @@
  *
 
  * TODO | - Use 'global' matrices or accept them as arguments (matrix stack) (?)
- *        - 
+ *        - Make certain methods and attributes private (eg. create)
+ *        - Set plain context object as prototype (?)
 
  * SPEC | -
  *        -
@@ -19,12 +20,7 @@
 var Context3D = function(canvas) {
 
 	//
-	// TODO: Make certain methods and attributes private (eg. create)
-	// TODO: Set plain context object as prototype (?)
 
-
-
-	//
 	this.create = function(canvas) {
 
 		//
@@ -178,6 +174,6 @@ var Context3D = function(canvas) {
 
 	//
 	this.context = this.create(canvas); //
-	// this.program = _;                   //
+	// this.program = _;                // The shader program is initialised asynchronously via this.loadShaders
 
 }

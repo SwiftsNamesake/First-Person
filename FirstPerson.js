@@ -24,10 +24,6 @@
 
 
 /* Global variables (should be kept to a minimum) */
-var projection = mat4.create(); 	// Perspective matrix
-var modelview  = mat4.create();	// Model-view matrix 
-
-
 var render; // Initialised with createRenderer later on (bad approach?)
 
 var pyramidMesh;	//
@@ -41,7 +37,7 @@ function InitUserInterface(context) {
 
 	//
 	// TODO: Refactor UI logic
-	
+
 	var background = [0.0, 0.0, 0.0]; // Background colour
 
 	// TODO: Use jquery
@@ -163,6 +159,10 @@ function begin () {
 	/* Graphics */
 	var canvas  = $('#cvs')[0];      // Complete
 	var context = new Context3D(canvas); // Complete
+
+	/* Matrices */
+	var projection = mat4.create(); // Perspective matrix
+	var modelview  = mat4.create();	// Model-view matrix 
 
 	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
 

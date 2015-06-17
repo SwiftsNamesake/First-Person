@@ -26,17 +26,35 @@ $(document).ready(function() {
 	var modelview  = mat4.create(); //
 	var projection = mat4.create(); //
 	
-	var vertices = context.createBuffer([[-1.00,  0.00,  0.00],
-										 [ 0.00,  2.00, -0.25],
-										 [ 1.00,  0.00,  0.00]].flatten(), 3);
+	var triangle = {
+		vertices: context.createBuffer([[-1.00,  0.00,  0.00],
+										[ 0.00,  2.00, -0.25],
+										[ 1.00,  0.00,  0.00]].flatten(), 3),
 
-	var colours  = context.createBuffer([[  0.00,  1.00,  0.00,  1.00],
-										 [  1.00,  0.00,  0.00,  1.00],
-										 [  1.00,  1.00,  0.00,  1.00]].flatten(), 4);
+		colours:  context.createBuffer([[0.00, 1.00, 0.00, 1.00],
+										[1.00, 0.00, 0.00, 1.00],
+										[1.00, 1.00, 0.00, 1.00]].flatten(), 4)
+	}
+
+	var square = {
+		vertices: context.createBuffer([[-1.00, -1.00, 0.00],
+										[-1.00,  1.00, 0.00],
+										[ 1.00,  1.00, 0.00],
+										[-1.00, -1.00, 0.00],
+										[ 1.00,  1.00, 0.00],
+										[ 1.00, -1.00, 0.00]].flatten(), 3),
+
+		colours:  context.createBuffer([[1.00, 0.52, 0.13, 1.00],
+										[1.00, 0.52, 0.13, 1.00],
+										[1.00, 0.52, 0.13, 1.00],
+										[1.00, 0.52, 0.13, 1.00],
+										[1.00, 0.52, 0.13, 1.00],
+										[1.00, 0.52, 0.13, 1.00]].flatten(), 4)
+	}
 
 	// var program = 
 	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
-		createRenderer(context, [{'vertices': vertices, 'colours': colours}], modelview, projection)();
+		createRenderer(context, [triangle, square], modelview, projection)();
 	});
 
 });
@@ -44,7 +62,7 @@ $(document).ready(function() {
 
 
 
-function animate(dt) { /**/  }
+function animate(dt) { /**/ }
 
 
 

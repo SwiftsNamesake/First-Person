@@ -6,7 +6,7 @@
  * June 17 2015
  *
 
- * TODO | - 
+ * TODO | - Palette defaults (?)
  *        - 
 
  * SPEC | -
@@ -19,6 +19,41 @@
 var shapes = (function() {
 
 	//
-	
+	var shapes = {};
+
+
+	shapes.cube = function(side, palette) {
+
+		//
+		// (L|R T|B F|B) => (Left|Right Top|Bottom Front|Back)
+		// TODO: Which direction does the Z axis go in (into screen our away from screen)?
+		var half = side/2;
+
+		var unique = [[-half,  half, -half],  // LTF (0)
+					  [-half,  half,  half],  // LTB (1)
+					  [ half,  half,  half],  // RTB (2)
+					  [ half,  half, -half],  // RTF (3)
+					  [-half, -half, -half],  // LBF (4)
+					  [-half, -half,  half],  // LBB (5)
+					  [ half, -half,  half],  // RBB (6)
+					  [ half, -half, -half]]; // RBF (7)
+
+		// TODO: This is really a constant (worth caching?)
+		var indeces = [0, 1, 3, 3, 1, 2,  // Top    (✓)
+					   4, 5, 7, 7, 5, 6,  // Bottom (✓)
+					   0, 3, 4, 4, 3, 7,  // Front  (✓)
+					   1, 2, 5, 5, 2, 6,  // Back   (✓)
+					   0, 1, 4, 4, 1, 5,  // Left   (✓)
+					   3, 2, 7, 7, 2, 6]; // Right  (✓)
+
+		var sides = ['top', 'bottom', 'front', 'back', 'left', 'right']; // This is a constant too
+
+		var vertices = indeces.map(function(index)    { return unique[index]; });
+		var colours  = indeces.map(function(index, i) { return palette[sides[Math.floor(i/6)]] });
+
+		return { vertices: vertices.flatten(), colours: colours.flatten() }; // TODO: Decide whether to concat buffers or keep them as they are
+
+	};
+
 
 }());
