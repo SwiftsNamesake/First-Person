@@ -28,6 +28,9 @@ var shapes = (function() {
 					   'left':   [0.00, 0.50, 0.00, 1.00],
 					   'right':  [0.00, 0.00, 0.50, 1.00]};
 
+	var sides = ['top', 'bottom', 'front', 'back', 'left', 'right']; // This is a constant
+
+
 	shapes.cube = function(side, palette) {
 
 		//
@@ -53,13 +56,39 @@ var shapes = (function() {
 					   0, 1, 4, 4, 1, 5,  // Left   (✓)
 					   3, 2, 7, 7, 2, 6]; // Right  (✓)
 
-		var sides = ['top', 'bottom', 'front', 'back', 'left', 'right']; // This is a constant too
 
 		var vertices = indeces.map(function(index)    { return unique[index]; });
-		var colours  = indeces.map(function(index, i) { return palette[sides[Math.floor(i/6)]] });
+		var colours  = indeces.map(function(index, i) { return palette[sides[Math.floor(i/6)]]; });
 
 		return { vertices: vertices.flatten(), colours: colours.flatten() }; // TODO: Decide whether to concat buffers or keep them as they are
 
+	};
+
+
+	shapes.rectangle = function(dx, dy, colour) {
+
+		// A monochrome rectangle parallel to the XY plane
+		var hdx = dx/2;
+		var hdy = dy/2;
+
+		var vertices = [[-hdx, -hdy, 0.00],
+						[-hdx,  hdy, 0.00],
+						[ hdx,  hdy, 0.00],
+						[-hdx, -hdy, 0.00],
+						[ hdx,  hdy, 0.00],
+						[ hdx, -hdy, 0.00]].flatten();
+
+		var colours = vertices.map(function(_) { return colour; }).flatten();
+
+		return { vertices: vertices, colours: colours };
+
+	};
+
+
+	shapes.monochrome = function(vertices, colour) {
+
+		// Creates a monochrome shape.
+		return { vertices: vertices.flatten(), colours: vertices.map(function(_) { return colour; }).flatten() };
 	};
 
 
