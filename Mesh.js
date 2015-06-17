@@ -16,7 +16,7 @@
 
 
 
- var Mesh = function (gl, shape, x, y, z) {
+ var Mesh = function (context, shape, x, y, z) {
 
  	/* TODO: Passing vectors as arguments */
  	/* ISSUE: How to manage external data (eg. scene, transformation matrix) */
@@ -185,7 +185,7 @@
 	this.initBuffer = function (type, array) {
 		/* Initializes the OpenGL buffers with our vertex and colour data */
 		/* TODO: Textures */
-		var glBuffer = gl.createBuffer();
+		var glBuffer = context.createBuffer();
 		var data;
 
 		if (array !== undefined) {
@@ -199,8 +199,8 @@
 		}
 
 		//console.log(data);
-		gl.bindBuffer(gl.ARRAY_BUFFER, glBuffer)
-		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
+		context.bindBuffer(context.ARRAY_BUFFER, glBuffer)
+		context.bufferData(context.ARRAY_BUFFER, new Float32Array(data), context.STATIC_DRAW);
 
 		return glBuffer;
 
@@ -279,29 +279,31 @@
 
 
 
-	this.draw = function (shader) {
+	this.draw = function (program, modelview, projection) {
 		/* Renders the mesh */
-		mat4.identity(mvMatrix)
-		mat4.translate(mvMatrix, this.p);
-		mat4.rotate(mvMatrix, this.r[0], [1, 0, 0]);
-		mat4.rotate(mvMatrix, this.r[1], [0, 1, 0]);
-		mat4.rotate(mvMatrix, this.r[2], [0, 0, 1]);
+		mat4.identity(modelview)
+		mat4.translate(modelview, this.p);
+		mat4.rotate(modelview, this.r[0], [1, 0, 0]);
+		mat4.rotate(modelview, this.r[1], [0, 1, 0]);
+		mat4.rotate(modelview, this.r[2], [0, 0, 1]);
 
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-		gl.vertexAttribPointer(shader.vertexPositionAttribute, this.vertexSize, gl.FLOAT, false, 0, 0);
+		context.bindBuffer(context.ARRAY_BUFFER, this.vertexBuffer);
+		context.vertexAttribPointer(program.vertexPositionAttribute, this.vertexSize, context.FLOAT, false, 0, 0);
 		
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.colourBuffer);
-		gl.vertexAttribPointer(shader.vertexColourAttribute, this.colourSize, gl.FLOAT, false, 0, 0);
+		context.bindBuffer(context.ARRAY_BUFFER, this.colourBuffer);
+		context.vertexAttribPointer(program.vertexColourAttribute, this.colourSize, context.FLOAT, false, 0, 0);
 		
-		SetMatrixUniforms();
-		gl.drawArrays(this.primitive, 0, this.vertexNumber);
+		SetMatrixUniforms(); // TODO: How to deal with shaders generically (when the uniforms aren't known in advance)
+		context.drawArrays(this.primitive, 0, this.vertexNumber);
 
 		// Draw contours
-		//gl.bindBuffer(gl.ARRAY_BUFFER, this.contourColourBuffer);
-		//gl.vertexAttribPointer(shader.vertexColourAttribute, this.colourSize, gl.FLOAT, false, 0, 0);
-		//gl.drawArrays(this.LINE_STRIP, 0, this.vertexNumber);
+		//context.bindBuffer(context.ARRAY_BUFFER, this.contourColourBuffer);
+		//context.vertexAttribPointer(program.vertexColourAttribute, this.colourSize, context.FLOAT, false, 0, 0);
+		//context.drawArrays(this.LINE_STRIP, 0, this.vertexNumber);
 
 	}
+
+
 
 	/* Motion */
 	this.p = [x, y, z];			/* Position (units) */
@@ -330,7 +332,7 @@
 	/* Settings */
 	/* ISSUE: Dealing with index arrays */
 	/* ISSUE: How to acquire GL context */
-	this.primitive = [gl.TRIANGLES, gl.TRIANGLE_STRIP, gl.LINE_STRIP, gl.LINES][0];
+	this.primitive = [context.TRIANGLES, context.TRIANGLE_STRIP, context.LINE_STRIP, context.LINES][0];
 	this.vertexSize = 3; 			/* Items per vertex in the vertex array */
 	this.colourSize = 4; 			/* Items per colour in the colour array */
 	//this.textureSize = undefined;

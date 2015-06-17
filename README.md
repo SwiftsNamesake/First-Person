@@ -46,7 +46,7 @@ Specification
 
     * Good practice
         - Comments, unit labels
-        - Optimimizations
+        - Optimizations
         - Organize code into reusable modules (ie. objects)
             -- Encapsulate buffers, shaders, textures behind high-level mesh objects
             -- Matrix

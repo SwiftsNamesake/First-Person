@@ -21,11 +21,8 @@
 
 
 /* Global variables (should be kept to a minimum) */
-var gl;
-var shaderProgram;
-
-var pMatrix = mat4.create(); 	// Perspective matrix
-var mvMatrix = mat4.create();	// Model-view matrix 
+var projection = mat4.create(); 	// Perspective matrix
+var modelview  = mat4.create();	// Model-view matrix 
 
 var bkg = [0.0, 0.0, 0.0]; // Background colour
 
@@ -44,13 +41,13 @@ var scene = [];		// Container for meshes (subject to change; should be replaced 
 
 
 /* InitUserInterface */
-function InitUserInterface() {
+function InitUserInterface(context) {
 
 	var canvas = document.getElementById('cvs');
 	var debug = document.getElementById('debug');
 
 	/* Colour */
-	var colSliders = 'RGB'.map(document.getElementById.bind(document));
+	var colSliders = ['R', 'G', 'B'].map(document.getElementById.bind(document));
 	var colValues  = ['valR', 'valG', 'valB'].map(document.getElementById.bind(document));
 	
 	/* Rotation */
@@ -63,7 +60,7 @@ function InitUserInterface() {
 			colValues[i].innerHTML = colSliders[i].value.toString() + '%';
 		};
 
-		gl.clearColor(bkg[0], bkg[1], bkg[2], 1.0);
+		context.clearColor(bkg[0], bkg[1], bkg[2], 1.0);
 
 	}
 
@@ -123,13 +120,21 @@ function InitUserInterface() {
 
 /* InitWebGL */
 function InitWebGL(canvas) {
+
+	//
+	var context;
+
 	try {
-		gl = canvas.getContext('experimental-webgl');
-		gl.viewportWidth = canvas.width;
-		gl.viewportHeight = canvas.height;
+		context = canvas.getContext('experimental-webcontext');
+		context.viewportWidth = canvas.width;
+		context.viewportHeight = canvas.height;
+		return context
 	} catch (e) {
-		if (!gl) {
-			alert('Download a modern browser, you fossil!');
+		if (!context) {
+			console.error('Download a modern browser, you fossil!');
+			return undefined;
+		} else {
+			console.error('Something bad happened.');
 		}
 	}
 }
@@ -142,62 +147,61 @@ function InitTextures() {
 
 
 /* SetMatrixUniforms */
-function SetMatrixUniforms() {
-	gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
-	gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+function SetMatrixUniforms(context, program, projection, modelview) {
+	context.uniformMatrix4fv(program.pMatrixUniform, false, projection);
+	context.uniformMatrix4fv(program.mvMatrixUniform, false, modelview);
 }
 
 
 /* InitShaders */
-function InitShaders(onloaded) {
+function InitShaders(context, psPath, vsPath) {
 	
 	// TODO: Find a way to get rid of callback chain (elegant asynchronicity)
 	// TODO: Find a way to load both shaders in parallel
-	loadShader(gl, 'http://localhost:8000/Web%20Dev/WebGL/First%20Person/pixelshader.txt', 'p', function (pixelShader) {
-		loadShader(gl, 'http://localhost:8000/Web%20Dev/WebGL/First%20Person/vertexshader.txt', 'v', function(vertexShader) {
-			shaderProgram = gl.createProgram();
-			gl.attachShader(shaderProgram, vertexShader);
-			gl.attachShader(shaderProgram, pixelShader);
-			gl.linkProgram(shaderProgram);
+	// console.log('Creating shader program');
+	// var shaderProgram = context.createProgram();
 
-			if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) { console.log('Could not initialize shaders'); }
+	return shaders.programFromSourceFiles(context, psPath, vsPath).then(function(program) {
 
-			gl.useProgram(shaderProgram);
+		//
+		context.useProgram(program);
 
-			shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, 'aVertexPosition');
-			gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+		// This part is specific to the shaders we're using.
+		program.vertexPositionAttribute = context.getAttribLocation(program, 'aVertexPosition');
+		context.enableVertexAttribArray(program.vertexPositionAttribute);
 
-			shaderProgram.vertexColourAttribute = gl.getAttribLocation(shaderProgram, 'aVertexColor');
-			gl.enableVertexAttribArray(shaderProgram.vertexColourAttribute)
+		program.vertexColourAttribute = context.getAttribLocation(program, 'aVertexColor');
+		context.enableVertexAttribArray(program.vertexColourAttribute)
 
-			shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, 'uPMatrix');
-			shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, 'uMVMatrix');
+		program.pMatrixUniform  = context.getUniformLocation(program, 'uPMatrix');
+		program.mvMatrixUniform = context.getUniformLocation(program, 'uMVMatrix');
 
-			onloaded(pixelShader, vertexShader); // Invoke callback
+		// createRenderer(context, program, modelview, projection, [{'vertices': vertices, 'colours': colours}])();
 
-		});
+		return program;
+
 	});
-
 
 }
 
 
+
 /* InitWorld */
-function InitWorld() {
+function InitWorld(context) {
 	/* Hurry up and fill the buffers, you idle buffoon! */
 
 	/* Experimental */
-	pyramidMesh = new Mesh(gl, '', 0, 0, -5);
+	pyramidMesh = new Mesh(context, '', 0, 0, -5);
 	pyramidMesh.ω = [ 0.0, 0.3, 0.0 ];
 	//pyramidMesh.setVelocity(0.0, 0.0, -5.0);
 	//pyramidMesh.ω = [0.0, rad(20.0), rad(180.0)];
 
-	anotherMesh = new Mesh(gl, '', -2, 1, -2);
+	anotherMesh = new Mesh(context, '', -2, 1, -2);
 	anotherMesh.setVelocity(0.0, -0.2, -0.4);
 	anotherMesh.ω = [ 0.0, 0.3, 0.0 ];
 
 	for (var i = -4; i < 4; i++) {
-		mesh = new Mesh(gl, '', i, 0, -7);
+		mesh = new Mesh(context, '', i, 0, -7);
 		mesh.setVelocity(0.0, -0.4, 0.0);
 		mesh.setRotation(0.0, 0.0, rad(45.0));
 		mesh.ω = [0.0, 2.0, 0.0];
@@ -208,52 +212,7 @@ function InitWorld() {
 
 }
 
-/* loadShader */
-function loadShader (gl, URI, type, onloaded) {
 
-	/* Retrieve shader file */
-	var request = new XMLHttpRequest();
-	request.open('GET', URI, true);
-
-	// TODO: Wait for shader to load (preferrably without jamming the UI)
-	// TODO: Look into promises (return a promise or take callback as argument?)
-	// TODO: Bite the bullet and embed shaders in HTML (?)
-	request.onreadystatechange = function() {
-		if (request.status != 200) {
-			console.error('Unable to load shader from file. Status: ' + status.toString());
-			return null;
-		} else {
-			console.log('Shader loaded successfully.');
-		}
-
-		/* Create GL shader from the source */
-		shaderType = { 'p': gl.FRAGMENT_SHADER,
-		               'v': gl.VERTEX_SHADER }[type];
-
-		if (shaderType == undefined) {
-			console.error('Invalid shader type (%s)', type) // TODO: Check if JS has this type of string interpolation
-			// return null; // TODO: Return values have no use in this type of callback
-		}
-
-		var shader = gl.createShader(shaderType); // Attach shader to request object
-
-		/* Compile and verify */
-		gl.shaderSource(shader, request.response);
-		gl.compileShader(shader);
-
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-			console.log(gl.getShaderInfoLog(shader));
-		}
-
-		onloaded(shader)
-
-	}
-
-	request.send();
-
-	return request;
-	
-}
 
 /* Begin */
 function Begin () {
@@ -261,20 +220,19 @@ function Begin () {
 	/* The cookie is a lie! */
 	document.cookie = 'username=Gottlob Frege;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
 	document.cookie = 'stress=acute;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
-	console.log(document.cookie.split(';'));
+	// console.log(document.cookie.split(';'));
 	
 	/* Graphics */
-	var canvas = document.getElementById('cvs'); // Complete
-	InitWebGL(canvas); // Complete
+	var canvas  = $('#cvs')[0];      // Complete
+	var context = InitWebGL(canvas); // Complete
 
-	// Complete (still working on async issues)
-	InitShaders(function (ps, vs) {
+	InitShaders(context, 'vertexshader.txt', 'pixelshader.txt').then(function (program) {
 
-		InitWorld();
+		InitWorld(context);
 		
 		/* OpenGL configurations */
-		gl.clearColor(0.0, 0.0, 0.0, 1.0);
-		gl.enable(gl.DEPTH_TEST);
+		context.clearColor(0.0, 0.0, 0.0, 1.0);
+		context.enable(context.DEPTH_TEST);
 		
 		/* Interface */
 		InitUserInterface();
@@ -296,28 +254,38 @@ function Animate () {
 	Render();
 }
 
+
+
 var cubeRotX = 0.0;
 var cubeRotY = 0.0;
 var cubeRotZ = 0.0;
 
+
+
 /* Render */
-function Render () {
+function createRenderer(context, modelview, projection, program) {
 	
-	/* Clear the screen */
-	console.log('Rendering...')
-	gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	return function() {
 
-	/* Update perspective matrix */
-	mat4.perspective(45, gl.viewportWidth/gl.viewportHeight, 0.1, 100.0, pMatrix);
-	mat4.identity(mvMatrix);
+		/* Clear the screen */
+		console.log('Rendering...')
+		context.viewport(0, 0, context.viewportWidth, context.viewportHeight);
+		context.clear(context.COLOR_BUFFER_BIT | context.DEPTH_BUFFER_BIT);
 
-	/* Draw the meshes */
-	for (var i = 0; i < scene.length; i++) {
-		scene[i].draw(shaderProgram);
-	};
+		/* Update perspective matrix */
+		mat4.perspective(45, context.viewportWidth/context.viewportHeight, 0.1, 100.0, projection);
+		mat4.identity(modelview);
+
+		/* Draw the meshes */
+		for (var i = 0; i < scene.length; i++) {
+			scene[i].draw(program);
+		};
+
+	}
 
 }
+
+
 
 /* Tick */
 function Tick () {
@@ -336,11 +304,15 @@ function Tick () {
 
 }
 
+
+
 /* onKeyUp */
 /* onKeyDown */
 /* onMouseUp */
 /* onMouseDown */
 /* onMouseMove */
+
+
 
 window.onload = function () {
 	Begin();
