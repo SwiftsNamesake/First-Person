@@ -86,7 +86,7 @@ var Context3D = function(canvas) {
 			self.program = program;                //
 			self.context.useProgram(self.program); //
 
-			// self part is specific to the shaders we're using.
+			// This part is specific to the shaders we're using.
 			self.program.vertexPositionAttribute = self.context.getAttribLocation(self.program, 'aVertexPosition');
 			self.context.enableVertexAttribArray(self.program.vertexPositionAttribute);
 
