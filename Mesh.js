@@ -183,26 +183,10 @@
 
 
 	this.initBuffer = function (type, array) {
+
 		/* Initializes the OpenGL buffers with our vertex and colour data */
 		/* TODO: Textures */
-		var glBuffer = context.createBuffer();
-		var data;
-
-		if (array !== undefined) {
-			data = array;
-		} else {
-			data = { 'vertex': this.vertices, 'colour': this.colours }[type]
-			if (data === undefined) {
-				console.log('Invalid buffer type.');
-				return;
-			}
-		}
-
-		//console.log(data);
-		context.bindBuffer(context.ARRAY_BUFFER, glBuffer)
-		context.bufferData(context.ARRAY_BUFFER, new Float32Array(data), context.STATIC_DRAW);
-
-		return glBuffer;
+		return context.createBuffer(array || {'vertex': this.vertices, 'colour': this.colours}[type], {'vertex': 3, 'colour': 4}[type])
 
 	}
 
@@ -279,22 +263,10 @@
 
 
 
-	this.draw = function (program, modelview, projection) {
-		/* Renders the mesh */
-		mat4.identity(modelview)
-		mat4.translate(modelview, this.p);
-		mat4.rotate(modelview, this.r[0], [1, 0, 0]);
-		mat4.rotate(modelview, this.r[1], [0, 1, 0]);
-		mat4.rotate(modelview, this.r[2], [0, 0, 1]);
+	this.draw = function (modelview, projection) {
 
-		context.bindBuffer(context.ARRAY_BUFFER, this.vertexBuffer);
-		context.vertexAttribPointer(program.vertexPositionAttribute, this.vertexSize, context.FLOAT, false, 0, 0);
-		
-		context.bindBuffer(context.ARRAY_BUFFER, this.colourBuffer);
-		context.vertexAttribPointer(program.vertexColourAttribute, this.colourSize, context.FLOAT, false, 0, 0);
-		
-		SetMatrixUniforms(); // TODO: How to deal with shaders generically (when the uniforms aren't known in advance)
-		context.drawArrays(this.primitive, 0, this.vertexNumber);
+		/* Renders the mesh */
+		context.renderVertices(this.vertexBuffer, this.colourBuffer, this.r, this.p, modelview, projection);
 
 		// Draw contours
 		//context.bindBuffer(context.ARRAY_BUFFER, this.contourColourBuffer);

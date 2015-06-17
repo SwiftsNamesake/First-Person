@@ -56,7 +56,7 @@ var Context3D = function(canvas) {
 		this.context.enable(this.context.DEPTH_TEST);
 
 		//
-		this.context.clearColor(0.0, 0.35, 0.42, 1.0);
+		this.context.clearColor(0.0, 0.35, 0.42, 1.0); // TODO: Don't hard-code background
 
 		//
 		// TODO: Rename function
@@ -170,7 +170,7 @@ var Context3D = function(canvas) {
 		this.context.vertexAttribPointer(this.program.vertexColourAttribute, colourbuffer.itemsize, this.context.FLOAT, false, 0, 0);
 		
 		// console.log(this.context, vertexbuffer, colourbuffer, vertexbuffer.size);
-		this.setMatrixUniforms(modelview, projection);
+		this.setMatrixUniforms(modelview, projection); // TODO: How to deal with shaders generically (when the uniforms aren't known in advance)
 		this.context.drawArrays(this.context.TRIANGLES, 0, vertexbuffer.size);
 
 	};

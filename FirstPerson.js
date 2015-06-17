@@ -15,7 +15,8 @@
  *          -- Matrix math (role my own or stick with mat4?)
  *          -- Shaders
  *          -- OpenGL boilerplate (context, configurations, etc.)
- 
+ *        - Naming scheme (uppercase/lowercase, camelcase, etc.)
+ *
  */
 
 
@@ -26,6 +27,7 @@ var modelview  = mat4.create();	// Model-view matrix
 
 var bkg = [0.0, 0.0, 0.0]; // Background colour
 
+var render; // Initialised with createRenderer later on (bad approach?)
 
 /* Buffers */
 var pyramidVertices;
@@ -60,7 +62,7 @@ function InitUserInterface(context) {
 			colValues[i].innerHTML = colSliders[i].value.toString() + '%';
 		};
 
-		context.clearColor(bkg[0], bkg[1], bkg[2], 1.0);
+		context.context.clearColor(bkg[0], bkg[1], bkg[2], 1.0);
 
 	}
 
@@ -118,70 +120,9 @@ function InitUserInterface(context) {
 }
 
 
-/* InitWebGL */
-function InitWebGL(canvas) {
-
-	//
-	var context;
-
-	try {
-		context = canvas.getContext('experimental-webcontext');
-		context.viewportWidth = canvas.width;
-		context.viewportHeight = canvas.height;
-		return context
-	} catch (e) {
-		if (!context) {
-			console.error('Download a modern browser, you fossil!');
-			return undefined;
-		} else {
-			console.error('Something bad happened.');
-		}
-	}
-}
-
-
 /* InitTextures */
 function InitTextures() {
 	
-}
-
-
-/* SetMatrixUniforms */
-function SetMatrixUniforms(context, program, projection, modelview) {
-	context.uniformMatrix4fv(program.pMatrixUniform, false, projection);
-	context.uniformMatrix4fv(program.mvMatrixUniform, false, modelview);
-}
-
-
-/* InitShaders */
-function InitShaders(context, psPath, vsPath) {
-	
-	// TODO: Find a way to get rid of callback chain (elegant asynchronicity)
-	// TODO: Find a way to load both shaders in parallel
-	// console.log('Creating shader program');
-	// var shaderProgram = context.createProgram();
-
-	return shaders.programFromSourceFiles(context, psPath, vsPath).then(function(program) {
-
-		//
-		context.useProgram(program);
-
-		// This part is specific to the shaders we're using.
-		program.vertexPositionAttribute = context.getAttribLocation(program, 'aVertexPosition');
-		context.enableVertexAttribArray(program.vertexPositionAttribute);
-
-		program.vertexColourAttribute = context.getAttribLocation(program, 'aVertexColor');
-		context.enableVertexAttribArray(program.vertexColourAttribute)
-
-		program.pMatrixUniform  = context.getUniformLocation(program, 'uPMatrix');
-		program.mvMatrixUniform = context.getUniformLocation(program, 'uMVMatrix');
-
-		// createRenderer(context, program, modelview, projection, [{'vertices': vertices, 'colours': colours}])();
-
-		return program;
-
-	});
-
 }
 
 
@@ -215,7 +156,7 @@ function InitWorld(context) {
 
 
 /* Begin */
-function Begin () {
+function begin () {
 
 	/* The cookie is a lie! */
 	document.cookie = 'username=Gottlob Frege;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
@@ -224,38 +165,34 @@ function Begin () {
 	
 	/* Graphics */
 	var canvas  = $('#cvs')[0];      // Complete
-	var context = InitWebGL(canvas); // Complete
+	var context = new Context3D(canvas); // Complete
 
-	InitShaders(context, 'vertexshader.txt', 'pixelshader.txt').then(function (program) {
+	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
 
 		InitWorld(context);
-		
-		/* OpenGL configurations */
-		context.clearColor(0.0, 0.0, 0.0, 1.0);
-		context.enable(context.DEPTH_TEST);
-		
-		/* Interface */
-		InitUserInterface();
+		InitUserInterface(context);
 
-		/* Initiate the render loop */
+		render = createRenderer(context, modelview, projection);
+
 		clock = new Date().getTime()
-		Animate()
-		
+		animate()
+
 	});
 
-
 }
+
 
 
 /* Animate */
-function Animate () {
-	requestAnimationFrame(Animate);
-	Tick();
-	Render();
+function animate () {
+	requestAnimationFrame(animate);
+	tick();
+	render();
 }
 
 
 
+// TODO: Move this
 var cubeRotX = 0.0;
 var cubeRotY = 0.0;
 var cubeRotZ = 0.0;
@@ -263,22 +200,17 @@ var cubeRotZ = 0.0;
 
 
 /* Render */
-function createRenderer(context, modelview, projection, program) {
+function createRenderer(context, modelview, projection) {
 	
 	return function() {
 
 		/* Clear the screen */
 		console.log('Rendering...')
-		context.viewport(0, 0, context.viewportWidth, context.viewportHeight);
-		context.clear(context.COLOR_BUFFER_BIT | context.DEPTH_BUFFER_BIT);
-
-		/* Update perspective matrix */
-		mat4.perspective(45, context.viewportWidth/context.viewportHeight, 0.1, 100.0, projection);
-		mat4.identity(modelview);
+		context.clear(modelview, projection);
 
 		/* Draw the meshes */
 		for (var i = 0; i < scene.length; i++) {
-			scene[i].draw(program);
+			scene[i].draw(modelview, projection);
 		};
 
 	}
@@ -288,11 +220,11 @@ function createRenderer(context, modelview, projection, program) {
 
 
 /* Tick */
-function Tick () {
+function tick () {
 
 	/* Calculate time delta */
-	var now = new Date().getTime();
-	var dt = (now - clock)/1000.0; /* Time elapsed since previous frame (seconds) */
+	var now = new Date().getTime(); // 
+	var dt = (now - clock)/1000.0;  // Time elapsed since previous frame (seconds)
 	clock = now;
 
 	//pyramidMesh.rotate(0.0, rad(dt*90/1000.0), 0.0);
@@ -315,7 +247,7 @@ function Tick () {
 
 
 window.onload = function () {
-	Begin();
+	begin();
 }
 
 
