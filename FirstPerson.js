@@ -17,6 +17,8 @@
  *          -- OpenGL boilerplate (context, configurations, etc.)
  *        - Naming scheme (uppercase/lowercase, camelcase, etc.)
  *
+ *        - Data bundles (eg. Point, Colour)
+ *
  */
 
 
@@ -25,16 +27,8 @@
 var projection = mat4.create(); 	// Perspective matrix
 var modelview  = mat4.create();	// Model-view matrix 
 
-var bkg = [0.0, 0.0, 0.0]; // Background colour
 
 var render; // Initialised with createRenderer later on (bad approach?)
-
-/* Buffers */
-var pyramidVertices;
-var pyramidColours;
-var cubeVertices;
-var cubeColours;
-var cubeIndices;
 
 var pyramidMesh;	//
 var clock = 0;		// TODO: Fix the timing issues (first call to Tick())
@@ -42,27 +36,33 @@ var clock = 0;		// TODO: Fix the timing issues (first call to Tick())
 var scene = [];		// Container for meshes (subject to change; should be replaced by a Scene object)
 
 
-/* InitUserInterface */
+
 function InitUserInterface(context) {
 
-	var canvas = document.getElementById('cvs');
-	var debug = document.getElementById('debug');
+	//
+	// TODO: Refactor UI logic
+	
+	var background = [0.0, 0.0, 0.0]; // Background colour
+
+	// TODO: Use jquery
+	var canvas = $('#cvs')[0];
+	var debug  = $('#debug')[0];
 
 	/* Colour */
-	var colSliders = ['R', 'G', 'B'].map(document.getElementById.bind(document));
-	var colValues  = ['valR', 'valG', 'valB'].map(document.getElementById.bind(document));
-	
+	var colSliders = ['#R', '#G', '#B'].map(function(id) { return $(id)[0]; });
+	var colValues  = ['#valR', '#valG', '#valB'].map(function(id) { return $(id)[0]; });
+
 	/* Rotation */
-	var rotSliders = comprehension('XYZ', document.getElementById.bind(document));
-	var rotValues = comprehension(['valX', 'valY', 'valZ'], document.getElementById.bind(document));
+	var rotSliders = ['#X', '#Y', '#Z'].map(function(id) { return $(id)[0]; });
+	var rotValues  = ['#valX', '#valY', '#valZ'].map(function(id) { return $(id)[0]; });
 
 	function onColourSliderChanges() {
 		for (var i = 0; i < colSliders.length; i++) {
-			bkg[i] = colSliders[i].value / 100.0;
+			background[i] = colSliders[i].value / 100.0;
 			colValues[i].innerHTML = colSliders[i].value.toString() + '%';
 		};
 
-		context.context.clearColor(bkg[0], bkg[1], bkg[2], 1.0);
+		context.context.clearColor(background[0], background[1], background[2], 1.0);
 
 	}
 
@@ -120,14 +120,12 @@ function InitUserInterface(context) {
 }
 
 
-/* InitTextures */
 function InitTextures() {
 	
 }
 
 
 
-/* InitWorld */
 function InitWorld(context) {
 	/* Hurry up and fill the buffers, you idle buffoon! */
 
@@ -155,7 +153,6 @@ function InitWorld(context) {
 
 
 
-/* Begin */
 function begin () {
 
 	/* The cookie is a lie! */
@@ -183,7 +180,6 @@ function begin () {
 
 
 
-/* Animate */
 function animate () {
 	requestAnimationFrame(animate);
 	tick();
@@ -199,7 +195,6 @@ var cubeRotZ = 0.0;
 
 
 
-/* Render */
 function createRenderer(context, modelview, projection) {
 	
 	return function() {
@@ -219,7 +214,6 @@ function createRenderer(context, modelview, projection) {
 
 
 
-/* Tick */
 function tick () {
 
 	/* Calculate time delta */
@@ -251,10 +245,12 @@ window.onload = function () {
 }
 
 
+
 /* Constructors */
 function Camera () {
 	// body...
 }
+
 
 
 function Scene () {

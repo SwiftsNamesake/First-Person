@@ -1,4 +1,4 @@
-<!-- -->
+ -->
 
 <!DOCTYPE html>
 
@@ -12,21 +12,26 @@
 	<meta charset='UTF-8'>
 	<meta lang='en-GB'>
 	<link rel='stylesheet' type='text/css' href='FirstPerson.css'>
-	<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> 
 	
+	<!-- Third party utilities -->
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> 
 	<script type='text/javascript' src='MatrixMath.js'></script>
 	
+	<!-- My utility scripts -->
 	<script type='text/javascript' src='Utilities.js'></script>
 	<script type='text/javascript' src='Shaders.js'></script>
 	<script type='text/javascript' src='Context3D.js'></script>
 	<script type='text/javascript' src='Mesh.js'></script>
 	<script type='text/javascript' src='Shapes.js'></script>
+	
+	<!-- Main script -->
+	<!-- <script type='text/javascript' src='FirstPerson.js'></script> -->
+	<script type='text/javascript' src='simpledemo.js'></script>
 
-	<script type='text/javascript' src='FirstPerson.js'></script>
-	<!-- <script type='text/javascript' src='simpledemo.js'></script> -->
 	<title>WebGL &mdash; First Person &#128266;</title>
 
 </head>
+
 <body>
 	<canvas id='cvs' width='1080' height='720'></canvas>
 	<p>An Original Creation by Jonatan Sundqvist</p>
@@ -41,7 +46,8 @@
 		<li>Y: <input id='Y' type='range' min='0' max='360' value='80'><span id='valY'>0&deg;</span></li>
 		<li>Z: <input id='Z' type='range' min='0' max='360' value='60'><span id='valZ'>0&deg;</span></li>
 	</ul>
-
+	
+	<!-- TODO: Dropdown -->
 	<ul id='debug'>
 		<li>X: N/A</li>
 		<li>Y: N/A</li>
@@ -58,4 +64,3 @@
 <h1 id='I'>WebGL &mdash; First Person</h1>
 <h1 id='II'>WebGL &mdash; First Person</h1>
 <h1 id='III'>WebGL &mdash; First Person</h1>
--->

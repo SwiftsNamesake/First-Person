@@ -57,14 +57,8 @@ function createRenderer(context, buffers, modelviewMatrix, projectionMatrix) {
 
 		// 
 		console.log('Rendering...');
-
-		/**/
 		frame++;
-
 		context.clear(modelviewMatrix, projectionMatrix); // Clear the frame and reset matrices
-
-		// context.uniformMatrix4fv(program.pMatrixUniform, false, projectionMatrix); //
-		// context.uniformMatrix4fv(program.mvMatrixUniform, false, modelviewMatrix); //
 
 		/* Draw stuff */
 		for (var i = 0; i < buffers.length; i++) {

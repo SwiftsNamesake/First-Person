@@ -5,53 +5,53 @@ Description...
 
 
 Specification
-=============
-    
-    Tickmarks (✔) indicate completed tasks.
-    Ellipses (...) indicate ongoing tasks.
+-------------
 
-    * Conceptual: World, Camera, Screen coordinates 
+Tickmarks (✔) indicate completed tasks.
+Ellipses (...) indicate ongoing tasks.
 
-    * Retrieve context
-    * Initialize viewport
-    * Write and load shaders
-        - Nothing fancy (for now)
-        - Ambient and point lighting
-        - Helper functions (loading, attaching)
-        - Consider XMLHttpRequest
+* Conceptual: World, Camera, Screen coordinates 
 
-    * Initialize buffers
-        - Ground
-        - A few simple shapes
-        - Textures or colours
+* Retrieve context
+* Initialize viewport
+* Write and load shaders
+    - Nothing fancy (for now)
+    - Ambient and point lighting
+    - Helper functions (loading, attaching)
+    - Consider XMLHttpRequest
 
-    * Implement rendering logic
-    * Implement animation logic
-        - Time handling (timer object, fixed FPS, global state?)
-        - Create physics objects (encapsulating state)
-        - Acceleration, impacts, forces
-        - Jumping
+* Initialize buffers
+    - Ground
+    - A few simple shapes
+    - Textures or colours
 
-    * Implement input logic
-        - WASD for moving around
-        - Mouse for looking around
-        - Space for jumping
-        - Configuration GUI?
-    
-    * Fun experiments
-        - Gaussian blur
-        - Warped textures
-        - Folded textures
-        - Run-time texture binding
+* Implement rendering logic
+* Implement animation logic
+    - Time handling (timer object, fixed FPS, global state?)
+    - Create physics objects (encapsulating state)
+    - Acceleration, impacts, forces
+    - Jumping
 
-    * Good practice
-        - Comments, unit labels
-        - Optimizations
-        - Organize code into reusable modules (ie. objects)
-            -- Encapsulate buffers, shaders, textures behind high-level mesh objects
-            -- Matrix
+* Implement input logic
+    - WASD for moving around
+    - Mouse for looking around
+    - Space for jumping
+    - Configuration GUI?
+
+* Fun experiments
+    - Gaussian blur
+    - Warped textures
+    - Folded textures
+    - Run-time texture binding
+
+* Good practice
+    - Comments, unit labels
+    - Optimizations
+    - Organize code into reusable modules (ie. objects)
+        -- Encapsulate buffers, shaders, textures behind high-level mesh objects
+        -- Matrix
 
 
 
 Contributors
-============
+------------
