@@ -23,41 +23,29 @@
 
 
 
-/* Global variables (should be kept to a minimum) */
-var pyramidMesh;	//
-var clock = 0;		// TODO: Fix the timing issues (first call to Tick())
-
-// TODO: Remove this
-var cubeRotX = 0.0;
-var cubeRotY = 0.0;
-var cubeRotZ = 0.0;
-
-
-
 $(document).ready(function () {
 
-	/* The cookie is a lie! */
+	// The cookie is a lie!
 	document.cookie = 'username=Gottlob Frege;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
 	document.cookie = 'stress=acute;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
 	// console.log(document.cookie.split(';'));
 	
-	/* Graphics */
+	// Graphics
 	var canvas  = $('#cvs')[0];      // Complete
 	var context = new Context3D(canvas); // Complete
 
-	/* Matrices */
+	// Matrices
 	var projection = mat4.create(); // Perspective matrix
 	var modelview  = mat4.create();	// Model-view matrix 
 
 	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
 
 		var scene = InitWorld(context);
-		InitUserInterface(context);
+		InitUserInterface(context, scene);
 
-		render = createRenderer(context, scene, modelview, projection);
-
-		clock = new Date().getTime();
-		createAnimator(0, scene, render)();
+		render  = createRenderer(context, scene, modelview, projection);
+		animate = createAnimator(scene, render);
+		requestAnimationFrame(animate) // Kick off the animation;
 
 	});
 
@@ -65,22 +53,26 @@ $(document).ready(function () {
 
 
 
-function InitUserInterface(context) {
+function InitUserInterface(context, scene) {
 
 	//
 	// TODO: Refactor UI logic
+	// TODO: Figure out a better way of attaching UI behaviour to objects
 
 	var background = [0.0, 0.0, 0.0]; // Background colour
+	var connected  = scene[5];        // Choose a mesh from the scene to connect to the UI
+
+	// console.log(connected);
 
 	// TODO: Use jquery
 	var canvas = $('#cvs')[0];
 	var debug  = $('#debug')[0];
 
-	/* Colour */
+	// Colour
 	var colSliders = ['#R', '#G', '#B'].map(function(id) { return $(id)[0]; });
 	var colValues  = ['#valR', '#valG', '#valB'].map(function(id) { return $(id)[0]; });
 
-	/* Rotation */
+	// Rotation
 	var rotSliders = ['#X', '#Y', '#Z'].map(function(id) { return $(id)[0]; });
 	var rotValues  = ['#valX', '#valY', '#valZ'].map(function(id) { return $(id)[0]; });
 
@@ -96,7 +88,8 @@ function InitUserInterface(context) {
 
 	function onRotationSliderChanges() {
 		for (var i = 0; i < rotSliders.length; i++) {
-			pyramidMesh.rotation[i] = rad(rotSliders[i].value);
+			// TODO: Find a better way of keeping body rotation and position in sync with its connected mesh
+			connected.body.r[i] = connected.mesh.rotation[i] = rad(rotSliders[i].value);
 			rotValues[i].innerHTML = rotSliders[i].value.toString() + '&deg;';
 		};
 	}
@@ -107,38 +100,39 @@ function InitUserInterface(context) {
 		
 		return function (e) {
 			
-			/* Mouse coordinates relative to the canvas */
+			// Mouse coordinates relative to the canvas
 			var bounds = this.getBoundingClientRect();
 			var x = e.clientX - bounds.left;
 			var y = e.clientY - bounds.top;
 			
-			/* The canvas' centre coordinates */
+			// The canvas' centre coordinates
 			var midX = this.width  / 2;
 			var midY = this.height / 2;
 
-			/* Distance from canvas centre */
+			// Distance from canvas centre
 			var dx = x - midX;
 			var dy = y - midY;
 
 			debug.children[0].innerHTML = 'X: ' + Math.round(180*(dx / midX)) + '&deg;';
 			debug.children[1].innerHTML = 'Y: ' + Math.round(180*(dy / midY)) + '&deg;';
 
-			//pyramidMesh.ω[0] = dy / (canvas.width/2);
-			//pyramidMesh.ω[1] = 2*(dx / midX);
-			//pyramidMesh.ω[0] = 2*(dy / midY);
+			//connected.ω[0] = dy / (canvas.width/2);
+			//connected.ω[1] = 2*(dx / midX);
+			//connected.ω[0] = 2*(dy / midY);
 
-			pyramidMesh.rotation[1] = π*(dx / midX);
-			pyramidMesh.rotation[0] = π*(dy / midY);
+			// TODO: Find a better way of keeping body rotation and position in sync with its connected mesh
+			connected.body.r[1] = connected.mesh.rotation[1] = π*(dx / midX);
+			connected.body.r[0] = connected.mesh.rotation[0] = π*(dy / midY);
 
 		}
 	}
 
-	/* Take the initial positions of the sliders into account */
+	// Take the initial positions of the sliders into account
 	onColourSliderChanges();
 	onRotationSliderChanges();
 
 	for (var i = 0; i < 3; ++i) {
-		/* Register the event listeners for each slider */
+		// Register the event listeners for each slider 
 		colSliders[i].addEventListener('change', onColourSliderChanges);
 		rotSliders[i].addEventListener('change', onRotationSliderChanges);
 	}
@@ -151,23 +145,22 @@ function InitUserInterface(context) {
 
 function InitWorld(context) {
 
-	/* Hurry up and fill the buffers, you idle buffoon! */
+	// Hurry up and fill the buffers, you idle buffoon!
 	var scene = []; // Container for meshes (subject to change; should be replaced by a Scene object)
 
-	/* Experimental */
-	pyramidMesh = new Mesh(context, shapes.cube(2.3), [0, 0, -5]);
-
-	var anotherMesh = new Mesh(context, shapes.cube(1.0), [-2, 1, -2]);
+	// Experimental 
+	var pyramid = new Mesh(context, shapes.cube(2.3), [0, 0, -5]);  // This isn't actually a pyramid...
+	var cube    = new Mesh(context, shapes.cube(1.0), [-2, 1, -2]); //
 
 	for (var i = -4; i < 4; i++) {
-		var mesh = new Mesh(context, shapes.cube(0.35), [i, 0, -7]);
-		scene.push({mesh: mesh, body: new Body(1.0, [i, 0, -7], [0.0, 0.0, rad(45.0)], [0.0, -0.4, 0.0], [0.0, 0.0, 0.0], [0.0, 2.0, 0.0], mesh)});
+		var mesh = new Mesh(context, shapes.cube(0.35), [i, 0, -7], [0.0, 0.0, rad(45.0)]);
+		scene.push({mesh: mesh, body: new Body(1.0, [0.0, -0.4, 0.0], [0.0, 0.0, 0.0], [0.0, 2.0, 0.0], mesh)});
 	}
 
 	// Add the meshes to the scene
-	//                                            mass  position        rotation          velocity        acceleration       angular       connected
-	scene.push({mesh: pyramidMesh, body: new Body(1.0, [0, 0, -5],  [0.0, 0.0, 0.0], [0.0,  0.0, -5.0], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], pyramidMesh)},
-	           {mesh: anotherMesh, body: new Body(1.0, [-2, 1, -2], [0.0, 0.0, 0.0], [0.0, -0.2, -0.4], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], anotherMesh)});
+	//                                        mass      velocity        acceleration       angular      connected
+	scene.push({mesh: pyramid, body: new Body(1.0, [0.0,  0.0, -5.0], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], pyramid)},
+	           {mesh: cube,    body: new Body(1.0, [0.0, -0.2, -0.4], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], cube)});
 
 	return scene;
 
@@ -175,14 +168,18 @@ function InitWorld(context) {
 
 
 
-function createAnimator (dt, scene, render) {
+function createAnimator (scene, render) {
 	
 	// You gotta love closures
+	var clock = undefined;
 
-	function animate() {
-		requestAnimationFrame(animate);
+	function animate(time) {
+		var dt = (time-(clock || time))*0.001; // Time delta (seconds)
 		tick(dt, scene);
 		render();
+
+		clock = time;
+		requestAnimationFrame(animate);
 	};
 
 	return animate;
@@ -195,13 +192,14 @@ function createRenderer(context, scene, modelview, projection) {
 	
 	return function() {
 
-		/* Clear the screen */
-		console.log('Rendering...')
+		// Clear the screen 
+		// console.log('Rendering...');
 		context.clear(modelview, projection);
 
-		/* Draw the meshes */
+		// Draw the meshes
 		for (var i = 0; i < scene.length; i++) {
 			scene[i].mesh.render(modelview, projection);
+			console.log(scene[i].mesh.position)
 		};
 
 	}
@@ -211,28 +209,21 @@ function createRenderer(context, scene, modelview, projection) {
 
 
 function tick (dt, scene) {
-
-	/* Calculate time delta */
-	var now = new Date().getTime(); // 
-	var dt = (now - clock)/1000.0;  // Time elapsed since previous frame (seconds)
-	clock = now;
-
+	// console.log(dt)
+	// TODO: Receive dt from requestAnimationFrame callback instead (do away with the clock) (✓)
 	//pyramidMesh.rotate(0.0, rad(dt*90/1000.0), 0.0);
 	//pyramidMesh.translate(0.0, 0.0, -10*dt/1000.0);
-	
-	for (var i = 0; i < scene.length; i++) {
-		scene[i].body.animate(dt);
-	}
+	for (var i = 0; i < scene.length; i++) { scene[i].body.animate(dt); }
 
 }
 
 
 
-/* onKeyUp */
-/* onKeyDown */
-/* onMouseUp */
-/* onMouseDown */
-/* onMouseMove */
+// onKeyUp
+// onKeyDown
+// onMouseUp
+// onMouseDown
+// onMouseMove
 
 
 

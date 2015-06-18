@@ -7,6 +7,9 @@
  *
 
  * TODO | - Should Body objects be completely disconnected from Meshes?
+ *          -- If not, its rotation and position has to be kept in sync somehow (maybe with another wrapper object?)
+ *          -- User-friendliness, queries (like names, should probably be delegated to high-level wrapper object)
+ *
  *        - Physics, collisions, bounding boxes, 
  *        - Vector object
 
@@ -17,17 +20,18 @@
 
 
 
-var Body = function(mass, position, rotation, velocity, acceleration, angular, connected) {
+var Body = function(mass, velocity, acceleration, angular, connected) {
 
 	//
-	// TODO: Read position and rotation from connected Mesh (?)
-	
+	// TODO: Accept single object as argument (?)
+	// TODO: Read position and rotation from connected Mesh (✓)
+
 	// Physics and animation
-	this.p = position || [0.0, 0.0, 0.0]; /* Position (units) */
-	this.r = rotation || [0.0, 0.0, 0.0]; /* Rotation (radians) */
-	this.v = velocity || [0.0, 0.0, 0.0]; /* Velocity (units per second) */
-	this.ω = angular  || [0.0, 0.0, 0.0]; /* Angular velocity (radians per second) */
-	this.a = acceleration || [0.0, 0.0, 0.0]; /* Acceleration (units per second per second) */
+	this.p = connected.position || [0.0, 0.0, 0.0]; // Position (units) 
+	this.r = connected.rotation || [0.0, 0.0, 0.0]; // Rotation (radians) 
+	this.v = velocity || [0.0, 0.0, 0.0]; // Velocity (units per second) 
+	this.ω = angular  || [0.0, 0.0, 0.0]; // Angular velocity (radians per second) 
+	this.a = acceleration || [0.0, 0.0, 0.0]; // Acceleration (units per second per second) 
 	
 	this.m = mass || 1.0;
 

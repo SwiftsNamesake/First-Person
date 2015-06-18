@@ -94,6 +94,19 @@ var shapes = (function() {
 	};
 
 
+
+	shapes.merge = function() {
+		//
+		// components|constituents|parts
+		// TODO: Rename (?)
+		// TODO: Disparate (non-attached) objects
+		// TODO: Let Mesh class handle composites instead (?)
+		// TODO: Rotations and offsets when merging shapes
+		// return
+	};
+
+
+
 	return shapes;
 
 

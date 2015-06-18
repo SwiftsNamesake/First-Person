@@ -26,7 +26,7 @@ var shaders = (function() {
 	var shaders = {};
 
 	// Configurations
-	shaders.DEBUG = false;
+	shaders.DEBUG = true;
 
 	// TODO: Allow changing at runtime (?)
 	// TODO: Use logging library instead (?)
@@ -56,7 +56,7 @@ var shaders = (function() {
 		// Handles a single completed shader request (which may have failed)
 		if (status == 'success') {
 			shaders.log('Successfully loaded shader.')
-			shaders.log(typeof xhr); // Seems to be string (not xhr)
+			// shaders.log(typeof xhr); // Seems to be string (not xhr)
 			return shaders.create(context, xhr, type);
 		} else {
 			console.error('Failed to load shader.');
@@ -80,7 +80,7 @@ var shaders = (function() {
 		try {
 			// TODO: Allow other shader type options (eg. synonyms and abbreviations) (?)
 			shaders.log('Creating shader.');
-			shaders.log(source);
+			// shaders.log(source);
 			var shader = context.createShader({'vertex': context.VERTEX_SHADER, 'pixel': context.FRAGMENT_SHADER}[type]);
 
 			/* Compile and verify */
@@ -124,7 +124,7 @@ var shaders = (function() {
 			// shaders.log(vertexshader instanceof String, pixelshader instanceof String);
 			return shaders.program(context, vertexshader, pixelshader);
 		});
-		
+
 	}
 
 	return shaders;

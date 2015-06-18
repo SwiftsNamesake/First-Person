@@ -20,7 +20,7 @@
  *        - Robustness
  *          -- Logging and debugging
  *          -- Type-checking, function signatures
-
+ *
  * SPEC | -
  *        -
  *
@@ -31,6 +31,7 @@
 var Mesh = function(context, data, position, rotation) {
 
 	//
+	// TODO: Accept single object as argument (?)
 	// var texture = context.createBuffer(data.texture, 2)
 	this.vertices = context.createBuffer(data.vertices, 3); //
 	this.colours  = context.createBuffer(data.colours,  4); //
