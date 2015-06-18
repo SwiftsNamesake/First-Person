@@ -28,7 +28,7 @@ var Context3D = function(canvas) {
 
 		try {
 			context = canvas.getContext('experimental-webgl');
-			context.viewportWidth = canvas.width;
+			context.viewportWidth  = canvas.width;
 			context.viewportHeight = canvas.height;
 			console.log('Created 3D context.');
 			return context;
@@ -49,21 +49,20 @@ var Context3D = function(canvas) {
 	this.configure = function() {
 
 		//
-		this.context.enable(this.context.DEPTH_TEST);
+		// TODO: Rename function (?)
 
-		//
+		this.context.enable(this.context.DEPTH_TEST);  //
 		this.context.clearColor(0.0, 0.35, 0.42, 1.0); // TODO: Don't hard-code background
 
-		//
-		// TODO: Rename function
 		// This needs some explaining (related to shader programs)
+		// This part is specific to the shaders we're using (should probably be extricated from Context3D class)
 		this.program.vertexPositionAttribute = this.context.getAttribLocation(this.program, 'aVertexPosition');
 		this.context.enableVertexAttribArray(this.program.vertexPositionAttribute);
 
 		this.program.vertexColourAttribute = this.context.getAttribLocation(this.program, 'aVertexColor');
 		this.context.enableVertexAttribArray(this.program.vertexColourAttribute);
 
-		this.program.pMatrixUniform = this.context.getUniformLocation(this.program, 'uPMatrix');
+		this.program.pMatrixUniform  = this.context.getUniformLocation(this.program, 'uPMatrix');
 		this.program.mvMatrixUniform = this.context.getUniformLocation(this.program, 'uMVMatrix');
 
 	}
@@ -81,18 +80,7 @@ var Context3D = function(canvas) {
 			//
 			self.program = program;                //
 			self.context.useProgram(self.program); //
-
-			// This part is specific to the shaders we're using.
-			self.program.vertexPositionAttribute = self.context.getAttribLocation(self.program, 'aVertexPosition');
-			self.context.enableVertexAttribArray(self.program.vertexPositionAttribute);
-
-			self.program.vertexColourAttribute = self.context.getAttribLocation(self.program, 'aVertexColor');
-			self.context.enableVertexAttribArray(self.program.vertexColourAttribute)
-
-			self.program.pMatrixUniform  = self.context.getUniformLocation(self.program, 'uPMatrix');
-			self.program.mvMatrixUniform = self.context.getUniformLocation(self.program, 'uMVMatrix');
-
-			self.configure();
+			self.configure();                      //
 
 			return self;
 

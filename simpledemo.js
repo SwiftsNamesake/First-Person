@@ -48,14 +48,20 @@ function createScene(context) {
 	//
 	var triangle  = new Mesh(context, shapes.monochrome([[-1.00,  0.00,  0.00], [0.00, 2.00, -0.25], [1.00, 0.00, 0.00]], [1.00, 1.00, 0.00, 1.00]), [0, 0, 0], [0, 0, 0]);
 	var square    = new Mesh(context, shapes.rectangle(1.0, 1.0, [1.00, 0.52, 0.13, 1.00]), [0, 0, 0], [0, 0, 0]);
-	var rectangle = new Mesh(context, shapes.rectangle(1.5, 3.2, palette.chartreuse), [0, 0, 0], [0, 0, 0]);
+	// var rectangle = new Mesh(context, shapes.rectangle(1.5, 3.2, palette.chartreuse), [0, 0, 0], [rad(30), 0, 0]);
 
-	var cube = new Mesh(context, shapes.cube(0.35), [0, 0, -0.14], [0, 0, 0]);
+	var cube = new Mesh(context, shapes.cube(0.35, {
+		'top':    palette.orange,
+		'bottom': palette.darkred,
+		'front':  palette.black,
+		'back':   palette.chartreuse,
+		'left':   palette.purple,
+		'right':  palette.darkkhaki }), [0, 0, -0.14], [0, 0, 0]);
 
-	var scene = [new Entity({mass: 1.0, velocity: [0,0,-1.0], acceleration: [0,0,0], angular: [1,0,0], mesh: triangle}),
-	             new Entity({mass: 1.0, velocity: [0,0,-1.0], acceleration: [0,0,0], angular: [0,0,0], mesh: square}),
-	             new Entity({mass: 1.0, velocity: [0,0,-1.0], acceleration: [0,0,0], angular: [0,0,0], mesh: cube}),
-	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,7], mesh: rectangle})];
+	var scene = [new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,1,0], mesh: triangle}),
+	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,1,0], mesh: square}),
+	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], mesh: rectangle}),
+	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,1,0], mesh: cube}) ];
 
 	return scene;
 	
@@ -91,9 +97,8 @@ function createRenderer(context, scene, modelviewMatrix, projectionMatrix) {
 	var render = function(time) {
 
 		// 
-		console.log('Rendering...');
+		// console.log('Rendering...');
 		context.clear(modelviewMatrix, projectionMatrix); // Clear the frame and reset matrices
-
 		scene.map(function(object) { object.mesh.render(modelviewMatrix, projectionMatrix); }); // Draw stuff
 
 	};

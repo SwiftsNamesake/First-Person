@@ -27,11 +27,11 @@ var Body = function(properties) {
 	// TODO: Read position and rotation from connected Mesh (✓)
 
 	// Physics and animation
-	this.p = properties.position || [0.0, 0.0, 0.0];           // Position (units) 
-	this.r = properties.rotation || [0.0, 0.0, 0.0];           // Rotation (radians) 
-	this.v = properties.velocity || [0.0, 0.0, 0.0];           // Velocity (units per second)
-	this.ω = properties.angular  || [0.0, 0.0, 0.0];           // Angular velocity (radians per second) 
-	this.a = properties.acceleration || [0.0, 0.0, 0.0];       // Acceleration (units per second per second) 
+	this.p = properties.position || [0.0, 0.0, 0.0];     // Position (units) 
+	this.r = properties.rotation || [0.0, 0.0, 0.0];     // Rotation (radians) 
+	this.v = properties.velocity || [0.0, 0.0, 0.0];     // Velocity (units per second)
+	this.ω = properties.angular  || [0.0, 0.0, 0.0];     // Angular velocity (radians per second) 
+	this.a = properties.acceleration || [0.0, 0.0, 0.0]; // Acceleration (units per second per second) 
 	
 	this.m = properties.mass || 1.0;
 
@@ -41,9 +41,9 @@ var Body = function(properties) {
 	this.animate = function(dt) {
 
 		//
-		this.p[0] += this.v[0]*dt + 0.5*this.a[0]*dt*dt 
-		this.p[1] += this.v[1]*dt + 0.5*this.a[1]*dt*dt 
-		this.p[2] += this.v[2]*dt + 0.5*this.a[2]*dt*dt 
+		this.p[0] += this.v[0]*dt + 0.5*this.a[0]*dt*dt;
+		this.p[1] += this.v[1]*dt + 0.5*this.a[1]*dt*dt;
+		this.p[2] += this.v[2]*dt + 0.5*this.a[2]*dt*dt;
 
 		//
 		this.v[0] += this.a[0]*dt;

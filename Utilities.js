@@ -105,3 +105,20 @@ Array.prototype.flatten = function() {
 String.prototype.shuffle = function() {
 	return (this.split("").shuffle().join(""));
 };
+
+
+
+/*  */
+function range(start, stop, step) {
+
+	var self = {};
+
+	var start = stop ? start : 0;
+	var stop  = stop ? stop  : 0;
+	var step  = step ? step  : 1;
+
+	self.map = function(f) { for (var i = start; i < stop; i+=step) { return f(i); } };
+
+	return self;
+
+}

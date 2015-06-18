@@ -17,20 +17,20 @@
 
 
 var Entity = function(properties) {
+
 	// 
-	// TODO: Add different coordinate systems (?)
+	// TODO: Use $.extend (?)
 	this.body = new Body({ position: properties.mesh.position,
 						   rotation: properties.mesh.rotation,
 						   mass:     properties.mass,
 						   velocity: properties.velocity,
 						   angular:  properties.angular,
 						   acceleration: properties.acceleration,
-						   connected: properties.mesh }); // TODO: Use $.extend (?)
+						   connected: properties.mesh });
 
 	this.mesh = properties.mesh;
 
-	console.log(this.mesh);
-
+	// 'Cache' these property definitions by applying them to the Entity prototype (?)
 	Object.defineProperty(this, 'position', { set: function(p) { this.body.p = this.mesh.position = p; return p; },
 	                                    	  get: function()  { console.assert(this.body.p === this.mesh.position); return this.body.p; } });
 
