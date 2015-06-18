@@ -62,8 +62,6 @@ function InitUserInterface(context, scene) {
 	var background = [0.0, 0.0, 0.0]; // Background colour
 	var connected  = scene[5];        // Choose a mesh from the scene to connect to the UI
 
-	// console.log(connected);
-
 	// TODO: Use jquery
 	var canvas = $('#cvs')[0];
 	var debug  = $('#debug');
@@ -154,13 +152,12 @@ function InitWorld(context) {
 
 	for (var i = -4; i < 4; i++) {
 		var mesh = new Mesh(context, shapes.cube(0.35), [i, 0, -7], [0.0, 0.0, rad(45.0)]);
-		scene.push({mesh: mesh, body: new Body(1.0, [0.0, -0.4, 0.0], [0.0, 0.0, 0.0], [0.0, 2.0, 0.0], mesh)});
+		scene.push(new Entity({mesh: mesh, mass: 1.0, velocity:[0.0, -0.4, 0.0],  acceleration: [0.0, 0.0, 0.0], angular: [0.0, 2.0, 0.0]}));
 	}
 
 	// Add the meshes to the scene
-	//                                        mass      velocity        acceleration       angular      connected
-	scene.push({mesh: pyramid, body: new Body(1.0, [0.0,  0.0, -5.0], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], pyramid)},
-	           {mesh: cube,    body: new Body(1.0, [0.0, -0.2, -0.4], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], cube)});
+	scene.push(new Entity({mesh: pyramid, mass: 1.0, velocity: [0.0,  0.0, -5.0], acceleration: [0.0, 0.0, 0.0], angular: [0.0, 0.3, 0.0]}),
+	           new Entity({mesh: cube,    mass: 1.0, velocity: [0.0, -0.2, -0.4], acceleration: [0.0, 0.0, 0.0], angular: [0.0, 0.3, 0.0]}));
 
 	return scene;
 
