@@ -32,9 +32,9 @@ $(document).ready(function() {
 
 	var cube = new Mesh(context, shapes.cube(0.35), [0, 0, -0.14], [0, 12, 0]);
 
-	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
-		createRenderer(context, [triangle, square, cube], modelview, projection)();
-	});
+	var scene = [triangle, square, cube];
+
+	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt' }).then(function(context) { createRenderer(context, scene, modelview, projection)(); });
 
 });
 

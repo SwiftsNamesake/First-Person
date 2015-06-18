@@ -1,12 +1,10 @@
 First Person
 ============
-
 Description...
 
 
 Specification
 -------------
-
 Tickmarks (✔) indicate completed tasks.
 Ellipses (...) indicate ongoing tasks.
 
@@ -55,3 +53,4 @@ Ellipses (...) indicate ongoing tasks.
 
 Contributors
 ------------
+Jonatan H Sundqvist

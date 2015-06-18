@@ -24,12 +24,44 @@
 
 
 /* Global variables (should be kept to a minimum) */
-var render; // Initialised with createRenderer later on (bad approach?)
-
 var pyramidMesh;	//
 var clock = 0;		// TODO: Fix the timing issues (first call to Tick())
 
-var scene = [];		// Container for meshes (subject to change; should be replaced by a Scene object)
+// TODO: Remove this
+var cubeRotX = 0.0;
+var cubeRotY = 0.0;
+var cubeRotZ = 0.0;
+
+
+
+$(document).ready(function () {
+
+	/* The cookie is a lie! */
+	document.cookie = 'username=Gottlob Frege;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
+	document.cookie = 'stress=acute;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
+	// console.log(document.cookie.split(';'));
+	
+	/* Graphics */
+	var canvas  = $('#cvs')[0];      // Complete
+	var context = new Context3D(canvas); // Complete
+
+	/* Matrices */
+	var projection = mat4.create(); // Perspective matrix
+	var modelview  = mat4.create();	// Model-view matrix 
+
+	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
+
+		var scene = InitWorld(context);
+		InitUserInterface(context);
+
+		render = createRenderer(context, scene, modelview, projection);
+
+		clock = new Date().getTime();
+		createAnimator(0, scene, render)();
+
+	});
+
+});
 
 
 
@@ -116,14 +148,11 @@ function InitUserInterface(context) {
 }
 
 
-function InitTextures() {
-	
-}
-
-
 
 function InitWorld(context) {
+
 	/* Hurry up and fill the buffers, you idle buffoon! */
+	var scene = []; // Container for meshes (subject to change; should be replaced by a Scene object)
 
 	/* Experimental */
 	pyramidMesh = new Mesh(context, shapes.cube(2.3), [0, 0, -5]);
@@ -140,57 +169,29 @@ function InitWorld(context) {
 	scene.push({mesh: pyramidMesh, body: new Body(1.0, [0, 0, -5],  [0.0, 0.0, 0.0], [0.0,  0.0, -5.0], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], pyramidMesh)},
 	           {mesh: anotherMesh, body: new Body(1.0, [-2, 1, -2], [0.0, 0.0, 0.0], [0.0, -0.2, -0.4], [0.0, 0.0, 0.0], [0.0, 0.3, 0.0], anotherMesh)});
 
+	return scene;
+
 }
 
 
 
-function begin () {
-
-	/* The cookie is a lie! */
-	document.cookie = 'username=Gottlob Frege;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
-	document.cookie = 'stress=acute;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
-	// console.log(document.cookie.split(';'));
+function createAnimator (dt, scene, render) {
 	
-	/* Graphics */
-	var canvas  = $('#cvs')[0];      // Complete
-	var context = new Context3D(canvas); // Complete
+	// You gotta love closures
 
-	/* Matrices */
-	var projection = mat4.create(); // Perspective matrix
-	var modelview  = mat4.create();	// Model-view matrix 
+	function animate() {
+		requestAnimationFrame(animate);
+		tick(dt, scene);
+		render();
+	};
 
-	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
-
-		InitWorld(context);
-		InitUserInterface(context);
-
-		render = createRenderer(context, modelview, projection);
-
-		clock = new Date().getTime()
-		animate()
-
-	});
+	return animate;
 
 }
 
 
 
-function animate () {
-	requestAnimationFrame(animate);
-	tick();
-	render();
-}
-
-
-
-// TODO: Move this
-var cubeRotX = 0.0;
-var cubeRotY = 0.0;
-var cubeRotZ = 0.0;
-
-
-
-function createRenderer(context, modelview, projection) {
+function createRenderer(context, scene, modelview, projection) {
 	
 	return function() {
 
@@ -209,7 +210,7 @@ function createRenderer(context, modelview, projection) {
 
 
 
-function tick () {
+function tick (dt, scene) {
 
 	/* Calculate time delta */
 	var now = new Date().getTime(); // 
@@ -235,19 +236,5 @@ function tick () {
 
 
 
-window.onload = function () {
-	begin();
-}
-
-
-
-/* Constructors */
-function Camera () {
-	// body...
-}
-
-
-
-function Scene () {
-	// body...
-}
+function Camera () {}
+function Scene  () {}

@@ -7,7 +7,7 @@
  *
 
  * TODO | - Palette defaults (?)
- *        - 
+ *        - Caching, saving constants
 
  * SPEC | -
  *        -
@@ -29,6 +29,7 @@ var shapes = (function() {
 					   'right':  [0.00, 0.00, 0.50, 1.00]};
 
 	var sides = ['top', 'bottom', 'front', 'back', 'left', 'right']; // This is a constant
+
 
 
 	shapes.cube = function(side, palette) {
@@ -65,6 +66,7 @@ var shapes = (function() {
 	};
 
 
+
 	shapes.rectangle = function(dx, dy, colour) {
 
 		// A monochrome rectangle parallel to the XY plane
@@ -85,8 +87,8 @@ var shapes = (function() {
 	};
 
 
-	shapes.monochrome = function(vertices, colour) {
 
+	shapes.monochrome = function(vertices, colour) {
 		// Creates a monochrome shape.
 		return { vertices: vertices.flatten(), colours: vertices.map(function(_) { return colour; }).flatten() };
 	};
