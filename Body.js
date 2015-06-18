@@ -54,9 +54,26 @@ var Body = function(mass, velocity, acceleration, angular, connected) {
 		this.r[2] += this.ω[2]*dt;
 
 		// Update connected mesh
+		// TODO: Better way of syncing
 		connected.position = this.p;
 		connected.rotation = this.r;
 
 	};
+
+};
+
+
+
+var Entity = function(body, mesh) {
+	// Test class that bundles a Body and a Mesh and ensures that their rotation and position are the same
+	// TODO: Add different coordinate systems (?)
+	this.body = body;
+	this.mesh = mesh;
+
+	Object.defineProperty(this, 'position', { set: function(p) { this.body.p = this.mesh.position = p; return p; },
+	                                    	  get: function()  { return this.body.p; } });
+
+	Object.defineProperty(this, 'rotation', { set: function(r) { this.body.r = this.mesh.rotation = r; return r; },
+	                                    	  get: function()  { return this.body.r; } });
 
 };

@@ -20,7 +20,7 @@
  *        - Robustness
  *          -- Logging and debugging
  *          -- Type-checking, function signatures
- *
+ 
  * SPEC | -
  *        -
  *

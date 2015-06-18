@@ -31,12 +31,12 @@ $(document).ready(function () {
 	// console.log(document.cookie.split(';'));
 	
 	// Graphics
-	var canvas  = $('#cvs')[0];      // Complete
+	var canvas  = $('#cvs')[0];          // Complete
 	var context = new Context3D(canvas); // Complete
 
 	// Matrices
 	var projection = mat4.create(); // Perspective matrix
-	var modelview  = mat4.create();	// Model-view matrix 
+	var modelview  = mat4.create();	// Model-view matrix
 
 	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
 
@@ -66,7 +66,7 @@ function InitUserInterface(context, scene) {
 
 	// TODO: Use jquery
 	var canvas = $('#cvs')[0];
-	var debug  = $('#debug')[0];
+	var debug  = $('#debug');
 
 	// Colour
 	var colSliders = ['#R', '#G', '#B'].map(function(id) { return $(id)[0]; });
@@ -113,16 +113,16 @@ function InitUserInterface(context, scene) {
 			var dx = x - midX;
 			var dy = y - midY;
 
-			debug.children[0].innerHTML = 'X: ' + Math.round(180*(dx / midX)) + '&deg;';
-			debug.children[1].innerHTML = 'Y: ' + Math.round(180*(dy / midY)) + '&deg;';
+			$('#debug #mouseX').html('X: ' + Math.round(180*(dx / midX)) + '&deg;');
+			$('#debug #mouseY').html('Y: ' + Math.round(180*(dy / midY)) + '&deg;');
 
 			//connected.ω[0] = dy / (canvas.width/2);
 			//connected.ω[1] = 2*(dx / midX);
 			//connected.ω[0] = 2*(dy / midY);
 
 			// TODO: Find a better way of keeping body rotation and position in sync with its connected mesh
-			connected.body.r[1] = connected.mesh.rotation[1] = π*(dx / midX);
-			connected.body.r[0] = connected.mesh.rotation[0] = π*(dy / midY);
+			connected.rotation[1] = π*(dx / midX);
+			connected.rotation[0] = π*(dy / midY);
 
 		}
 	}
@@ -199,7 +199,6 @@ function createRenderer(context, scene, modelview, projection) {
 		// Draw the meshes
 		for (var i = 0; i < scene.length; i++) {
 			scene[i].mesh.render(modelview, projection);
-			console.log(scene[i].mesh.position)
 		};
 
 	}

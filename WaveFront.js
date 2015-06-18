@@ -13,3 +13,9 @@
  *        -
  *
  */
+
+
+
+ var WaveFront = (function() {
+ 	
+ }());
