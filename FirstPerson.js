@@ -23,7 +23,11 @@
 
 
 
-$(document).ready(function () {
+$(document).ready(main);
+
+
+
+function main() {
 
 	// The cookie is a lie!
 	document.cookie = 'username=Gottlob Frege;expires=Thu, 31 Dec 2014 12:00:00 GMT;path=/';
@@ -40,16 +44,19 @@ $(document).ready(function () {
 
 	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
 
-		var scene = InitWorld(context);
-		InitUserInterface(context, scene);
+		var scene = InitWorld(context);    // 
+		InitUserInterface(context, scene); // 
 
-		render  = createRenderer(context, scene, modelview, projection);
-		animate = createAnimator(scene, render);
-		requestAnimationFrame(animate) // Kick off the animation;
+		main.scene   = scene;
+		main.context = context;
+
+		render  = createRenderer(context, scene, modelview, projection); // 
+		animate = createAnimator(scene, render);                         // 
+		requestAnimationFrame(animate)                                   // Kick off the animation;
 
 	});
 
-});
+}
 
 
 
@@ -59,8 +66,8 @@ function InitUserInterface(context, scene) {
 	// TODO: Refactor UI logic
 	// TODO: Figure out a better way of attaching UI behaviour to objects
 
-	var background = [0.0, 0.0, 0.0]; // Background colour
-	var connected  = scene[5];        // Choose a mesh from the scene to connect to the UI
+	var background = [0.0, 0.0, 0.0, 1.0]; // Background colour
+	var connected  = scene[5];             // Choose a mesh from the scene to connect to the UI
 
 	// TODO: Use jquery
 	var canvas = $('#cvs')[0];

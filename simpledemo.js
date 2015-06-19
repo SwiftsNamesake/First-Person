@@ -27,7 +27,8 @@ $(document).ready(function() {
 	var modelview  = mat4.create(); //
 	var projection = mat4.create(); //
 	
-	var scene = createScene(context);
+	var scene  = createScene(context);
+	// this.scene = scene;
 
 	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt' }).then(function(context) {
 
@@ -46,22 +47,22 @@ $(document).ready(function() {
 function createScene(context) {
 
 	//
-	var triangle  = new Mesh(context, shapes.monochrome([[-1.00,  0.00,  0.00], [0.00, 2.00, -0.25], [1.00, 0.00, 0.00]], [1.00, 1.00, 0.00, 1.00]), [0, 0, 0], [0, 0, 0]);
-	var square    = new Mesh(context, shapes.rectangle(1.0, 1.0, [1.00, 0.52, 0.13, 1.00]), [0, 0, 0], [0, 0, 0]);
-	// var rectangle = new Mesh(context, shapes.rectangle(1.5, 3.2, palette.chartreuse), [0, 0, 0], [rad(30), 0, 0]);
+	var yellow  = new Mesh(context, shapes.monochrome([[-1.00,  0.00,  0.00], [0.00,  2.00, -0.58], [1.00, 0.00, 0.00]], palette.yellow),   [0, 0, 0], [0, 0, 0]);
+	var purple  = new Mesh(context, shapes.monochrome([[-1.00,  0.00,  0.00], [0.00, -2.00, -0.58], [1.00, 0.00, 0.00]], palette.deeppink), [0, 0, 0], [0, 0, 0]);
+	var square  = new Mesh(context, shapes.rectangle(1.0, 1.0, [1.00, 0.52, 0.13, 1.00]), [0, 0, 0], [0, 0, 0]);
 
 	var cube = new Mesh(context, shapes.cube(0.35, {
-		'top':    palette.orange,
-		'bottom': palette.darkred,
-		'front':  palette.black,
-		'back':   palette.chartreuse,
-		'left':   palette.purple,
-		'right':  palette.darkkhaki }), [0, 0, -0.14], [0, 0, 0]);
+		top:    palette.orange,
+		bottom: palette.darkred,
+		front:  palette.black,
+		back:   palette.chartreuse,
+		left:   palette.purple,
+		right:  palette.darkkhaki }), [0, 0, -0.14], [0, 0, 0]);
 
-	var scene = [new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,1,0], mesh: triangle}),
-	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,1,0], mesh: square}),
-	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], mesh: rectangle}),
-	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,1,0], mesh: cube}) ];
+	var scene = [new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], mesh: yellow }),
+	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], mesh: purple }),
+	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], mesh: square }),
+	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], mesh: cube   })];
 
 	return scene;
 	
