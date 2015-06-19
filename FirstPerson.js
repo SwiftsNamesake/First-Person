@@ -42,7 +42,7 @@ function main() {
 	var projection = mat4.create(); // Perspective matrix
 	var modelview  = mat4.create();	// Model-view matrix
 
-	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt'}).then(function(context) {
+	context.loadShaders({ vertex: 'shaders/vertexshader.txt', pixel: 'shaders/pixelshader.txt' }).then(function(context) {
 
 		var scene = InitWorld(context);    // 
 		InitUserInterface(context, scene); // 

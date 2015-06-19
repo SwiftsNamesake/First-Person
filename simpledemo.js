@@ -30,7 +30,7 @@ $(document).ready(function() {
 	var scene  = createScene(context);
 	// this.scene = scene;
 
-	context.loadShaders({ vertex: 'vertexshader.txt', pixel: 'pixelshader.txt' }).then(function(context) {
+	context.loadShaders({ vertex: 'shaders/vertexshader.txt', pixel: 'shaders/pixelshader.txt' }).then(function(context) {
 
 		var tick    = function(dt) { scene.map(function(entity) { entity.body.animate(dt); }); }
 		var render  = createRenderer(context, scene, modelview, projection);
