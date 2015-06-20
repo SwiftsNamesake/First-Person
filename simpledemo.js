@@ -27,8 +27,8 @@ $(document).ready(function() {
 	var modelview  = mat4.create(); //
 	var projection = mat4.create(); //
 	
-	var scene  = createScene(context);            //
-	var ui     = attachListeners(context, scene); //
+	var scene = createScene(context);            //
+	var ui    = attachListeners(context, scene); //
 	// this.scene = scene;
 
 	context.loadShaders({ vertex: 'shaders/vertexshader.txt', pixel: 'shaders/pixelshader.txt' }).then(function(context) {
@@ -50,18 +50,21 @@ function attachListeners(context, scene) {
 	//
 	var dropdown = $('#shapes');
 	var solids = {
-		cube    : new Mesh(context, shapes.cube(2.0),                                  [0,0,-2.5], [0,0,0]),
-		box     : new Mesh(context, shapes.box(2.0, 1.8, 0.9),                         [0,0,-2.5], [0,0,0]),
-		sphere  : new Mesh(context, shapes.sphere(3.2, palette.chartreuse),            [0,0,-2.5], [0,0,0]),
-		cone    : new Mesh(context, shapes.cone(2.0, 3.2, palette.chartreuse),         [0,0,-2.5], [0,0,0]),		
-		pyramid : new Mesh(context, shapes.pyramid(2.0, 1.8, 1.9, palette.chartreuse), [0,0,-2.5], [0,0,0])
+		cube    : new Mesh(context, shapes.cube(2.0),                                  [0,0,-4], [0,0,0]),
+		box     : new Mesh(context, shapes.box(2.0, 1.8, 0.9),                         [0,0,-4], [0,0,0]),
+		sphere  : new Mesh(context, shapes.sphere(2,0, palette.chartreuse),            [0,0,-4], [0,0,0]),
+		cone    : new Mesh(context, shapes.cone(2.0, 3.2, palette.chartreuse),         [0,0,-4], [0,0,0]),		
+		pyramid : new Mesh(context, shapes.pyramid(2.0, 1.8, 1.9, palette.chartreuse), [0,0,-4], [0,0,0])
 	};
 
 	['cube', 'box', 'sphere', 'pyramid', 'cone'].map(function(shape) { dropdown.append('<option value="' + shape + '">' + shape + '</option>'); });
 	var index = scene.push(new Entity({mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,2,0], mesh: solids['cube']  })) - 1;
 
 	function shapeSelected(event) {
+		// TODO: It seems I still haven't solved the body/mesh syncing problem...
 		scene[index].mesh = solids[event.target.value];
+		scene[index].mesh.position = scene[index].body.p;
+		scene[index].mesh.rotation = scene[index].body.r;
 	}
 
 	dropdown.change(shapeSelected);
