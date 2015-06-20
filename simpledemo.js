@@ -50,14 +50,15 @@ function attachListeners(context, scene) {
 	//
 	var dropdown = $('#shapes');
 	var solids = {
-		cube    : new Mesh(context, shapes.cube(2.0),                                  [0,0,-4], [0,0,0]),
-		box     : new Mesh(context, shapes.box(2.0, 1.8, 0.9),                         [0,0,-4], [0,0,0]),
-		sphere  : new Mesh(context, shapes.sphere(2,0, palette.chartreuse),            [0,0,-4], [0,0,0]),
-		cone    : new Mesh(context, shapes.cone(2.0, 3.2, palette.chartreuse),         [0,0,-4], [0,0,0]),		
-		pyramid : new Mesh(context, shapes.pyramid(2.0, 1.8, 1.9, palette.chartreuse), [0,0,-4], [0,0,0])
+		cube     : new Mesh(context, shapes.cube(1.8),                                  [0,0,-4], [0,0,0]),
+		box      : new Mesh(context, shapes.box(2.0, 1.2, 0.9),                         [0,0,-4], [0,0,0]),
+		sphere   : new Mesh(context, shapes.sphere(1.0, palette.chartreuse),            [0,0,-4], [0,0,0]),
+		cone     : new Mesh(context, shapes.cone(1.0, 1.2, palette.chartreuse),         [0,0,-4], [0,0,0]),		
+		pyramid  : new Mesh(context, shapes.pyramid(2.0, 1.2, 1.9),                     [0,0,-4], [0,0,0]),
+		cylinder : new Mesh(context, shapes.cylinder(1.0, 1.2, palette.chartreuse),     [0,0,-4], [0,0,0])
 	};
 
-	['cube', 'box', 'sphere', 'pyramid', 'cone'].map(function(shape) { dropdown.append('<option value="' + shape + '">' + shape + '</option>'); });
+	Object.keys(solids).map(function(shape) { dropdown.append('<option value="' + shape + '">' + shape + '</option>'); });
 	var index = scene.push(new Entity({mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,2,0], mesh: solids['cube']  })) - 1;
 
 	function shapeSelected(event) {
