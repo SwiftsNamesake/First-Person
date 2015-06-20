@@ -52,7 +52,7 @@ function main() {
 
 		render  = createRenderer(context, scene, modelview, projection); // 
 		animate = createAnimator(scene, render);                         // 
-		requestAnimationFrame(animate)                                   // Kick off the animation;
+		requestAnimationFrame(animate);                                  // Kick off the animation;
 
 	});
 
