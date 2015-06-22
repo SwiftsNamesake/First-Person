@@ -141,7 +141,7 @@ function createRenderer(context, scene, modelviewMatrix, projectionMatrix) {
 	var render = function(time) {
 
 		// 
-		// console.log('Rendering...');
+		// log('Rendering...');
 		context.clear(modelviewMatrix, projectionMatrix); // Clear the frame and reset matrices
 		scene.map(function(entity) { entity.render(modelviewMatrix, projectionMatrix); }); // Draw stuff
 
