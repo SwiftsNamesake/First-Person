@@ -33,7 +33,7 @@ $(document).ready(function() {
 
 	context.loadShaders({ vertex: 'shaders/vertexshader.txt', pixel: 'shaders/pixelshader.txt' }).then(function(context) {
 
-		var tick    = function(dt) { scene.map(function(entity) { entity.body.animate(dt); }); }
+		var tick    = function(dt) { scene.map(function(entity) { entity.animate(dt); }); }
 		var render  = createRenderer(context, scene, modelview, projection);
 		var animate = createAnimator(tick, render);
 
@@ -137,7 +137,7 @@ function createRenderer(context, scene, modelviewMatrix, projectionMatrix) {
 		// 
 		// console.log('Rendering...');
 		context.clear(modelviewMatrix, projectionMatrix); // Clear the frame and reset matrices
-		scene.map(function(object) { object.mesh.render(modelviewMatrix, projectionMatrix); }); // Draw stuff
+		scene.map(function(object) { object.render(modelviewMatrix, projectionMatrix); }); // Draw stuff
 
 	};
 

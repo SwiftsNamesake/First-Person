@@ -202,7 +202,7 @@ function createRenderer(context, scene, modelview, projection) {
 
 		// Draw the meshes
 		for (var i = 0; i < scene.length; i++) {
-			scene[i].mesh.render(modelview, projection);
+			scene[i].render(modelview, projection);
 		};
 
 	}
@@ -216,7 +216,7 @@ function tick (dt, scene) {
 	// TODO: Receive dt from requestAnimationFrame callback instead (do away with the clock) (✓)
 	//pyramidMesh.rotate(0.0, rad(dt*90/1000.0), 0.0);
 	//pyramidMesh.translate(0.0, 0.0, -10*dt/1000.0);
-	for (var i = 0; i < scene.length; i++) { scene[i].body.animate(dt); }
+	for (var i = 0; i < scene.length; i++) { scene[i].animate(dt); }
 
 }
 
