@@ -95,8 +95,8 @@ function InitUserInterface(context, scene) {
 
 	function onRotationSliderChanges() {
 		for (var i = 0; i < rotSliders.length; i++) {
-			// TODO: Find a better way of keeping body rotation and position in sync with its connected mesh
-			connected.body.r[i] = connected.mesh.rotation[i] = radians(rotSliders[i].value);
+			// TODO: Find a better way of keeping body rotation and position in sync with its connected mesh (✓)
+			connected.body.r[i] =  radians(rotSliders[i].value);
 			rotValues[i].innerHTML = rotSliders[i].value.toString() + '&deg;';
 		};
 	}
@@ -128,8 +128,8 @@ function InitUserInterface(context, scene) {
 			//connected.ω[0] = 2*(dy / midY);
 
 			// TODO: Find a better way of keeping body rotation and position in sync with its connected mesh
-			connected.rotation[1] = π*(dx / midX);
-			connected.rotation[0] = π*(dy / midY);
+			connected.body.r[1] = π*(dx / midX);
+			connected.body.r[0] = π*(dy / midY);
 
 		}
 	}
@@ -156,12 +156,18 @@ function InitWorld(context) {
 	var scene = []; // Container for meshes (subject to change; should be replaced by a Scene object)
 
 	// Experimental 
-	var pyramid = new Mesh(context, shapes.cube(2.3));  // This isn't actually a pyramid...
+	var pyramid = new Mesh(context, shapes.cube(2.3)); // This isn't actually a pyramid...
 	var cube    = new Mesh(context, shapes.cube(1.0)); //
 
 	for (var i = -4; i < 4; i++) {
-		var mesh = new Mesh(context, shapes.cube(0.35), [i, 0, -7], [0.0, 0.0, radians(45.0)]);
-		scene.push(new Entity({mesh: mesh, mass: 1.0, velocity:[0.0, -0.4, 0.0],  acceleration: [0.0, 0.0, 0.0], angular: [0.0, 2.0, 0.0]}));
+		var mesh = new Mesh(context, shapes.cube(0.35));
+		scene.push(new Entity({ mesh: mesh,
+								position: [i, 0, -7],
+								rotation: [0.0, 0.0, radians(45.0)],
+								mass: 1.0,
+								velocity:[0.0, -0.4, 0.0],
+								acceleration: [0.0, 0.0, 0.0],
+								angular: [0.0, 2.0, 0.0]}));
 	}
 
 	// Add the meshes to the scene
@@ -179,7 +185,7 @@ function InitWorld(context) {
 			   				mass:         1.0,
 			   				velocity:     [0.0, -0.2, -0.4],
 			   				acceleration: [0.0, 0.0, 0.0],
-			   				angular:      [0.0, 0.3, 0.0]});
+			   				angular:      [0.0, 0.3, 0.0]}));
 
 	return scene;
 
