@@ -47,9 +47,11 @@ function main() {
 		var scene = InitWorld(context);    // 
 		InitUserInterface(context, scene); // 
 
+		// So that we can manipulate the scene via the console
 		main.scene   = scene;
 		main.context = context;
 
+		//
 		render  = createRenderer(context, scene, modelview, projection); // 
 		animate = createAnimator(scene, render);                         // 
 		requestAnimationFrame(animate);                                  // Kick off the animation;
@@ -94,7 +96,7 @@ function InitUserInterface(context, scene) {
 	function onRotationSliderChanges() {
 		for (var i = 0; i < rotSliders.length; i++) {
 			// TODO: Find a better way of keeping body rotation and position in sync with its connected mesh
-			connected.body.r[i] = connected.mesh.rotation[i] = rad(rotSliders[i].value);
+			connected.body.r[i] = connected.mesh.rotation[i] = radians(rotSliders[i].value);
 			rotValues[i].innerHTML = rotSliders[i].value.toString() + '&deg;';
 		};
 	}
@@ -154,17 +156,30 @@ function InitWorld(context) {
 	var scene = []; // Container for meshes (subject to change; should be replaced by a Scene object)
 
 	// Experimental 
-	var pyramid = new Mesh(context, shapes.cube(2.3), [0, 0, -5]);  // This isn't actually a pyramid...
-	var cube    = new Mesh(context, shapes.cube(1.0), [-2, 1, -2]); //
+	var pyramid = new Mesh(context, shapes.cube(2.3));  // This isn't actually a pyramid...
+	var cube    = new Mesh(context, shapes.cube(1.0)); //
 
 	for (var i = -4; i < 4; i++) {
-		var mesh = new Mesh(context, shapes.cube(0.35), [i, 0, -7], [0.0, 0.0, rad(45.0)]);
+		var mesh = new Mesh(context, shapes.cube(0.35), [i, 0, -7], [0.0, 0.0, radians(45.0)]);
 		scene.push(new Entity({mesh: mesh, mass: 1.0, velocity:[0.0, -0.4, 0.0],  acceleration: [0.0, 0.0, 0.0], angular: [0.0, 2.0, 0.0]}));
 	}
 
 	// Add the meshes to the scene
-	scene.push(new Entity({mesh: pyramid, mass: 1.0, velocity: [0.0,  0.0, -5.0], acceleration: [0.0, 0.0, 0.0], angular: [0.0, 0.3, 0.0]}),
-	           new Entity({mesh: cube,    mass: 1.0, velocity: [0.0, -0.2, -0.4], acceleration: [0.0, 0.0, 0.0], angular: [0.0, 0.3, 0.0]}));
+	scene.push(new Entity({ mesh:         pyramid,
+							position:     [0, 0, -5],
+							rotation:     [0, 0,  0],
+							mass:         1.0,
+							velocity:     [0.0, 0.0, -5.0],
+							acceleration: [0.0, 0.0,  0.0],
+							angular:      [0.0, 0.3,  0.0]}),
+
+			   new Entity({ mesh:         cube,
+			   				position:     [-2, 1, -2],
+			   				rotation:     [ 0, 0,  0],
+			   				mass:         1.0,
+			   				velocity:     [0.0, -0.2, -0.4],
+			   				acceleration: [0.0, 0.0, 0.0],
+			   				angular:      [0.0, 0.3, 0.0]});
 
 	return scene;
 
@@ -212,10 +227,7 @@ function createRenderer(context, scene, modelview, projection) {
 
 
 function tick (dt, scene) {
-	// console.log(dt)
 	// TODO: Receive dt from requestAnimationFrame callback instead (do away with the clock) (✓)
-	//pyramidMesh.rotate(0.0, rad(dt*90/1000.0), 0.0);
-	//pyramidMesh.translate(0.0, 0.0, -10*dt/1000.0);
 	for (var i = 0; i < scene.length; i++) { scene[i].animate(dt); }
 
 }
@@ -228,7 +240,5 @@ function tick (dt, scene) {
 // onMouseDown
 // onMouseMove
 
-
-
-function Camera () {}
-function Scene  () {}
+// function Camera () {}
+// function Scene  () {}
