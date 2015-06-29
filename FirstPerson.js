@@ -65,7 +65,7 @@ function main() {
 function InitUserInterface(context, scene) {
 
 	//
-	// TODO: Refactor UI logic
+	// TODO: Refactor UI console.logic
 	// TODO: Figure out a better way of attaching UI behaviour to objects
 
 	var background = [0.0, 0.0, 0.0, 1.0]; // Background colour

@@ -23,14 +23,14 @@ Ellipses (...) indicate ongoing tasks.
     - A few simple shapes
     - Textures or colours
 
-* Implement rendering logic
-* Implement animation logic
+* Implement rendering console.logic
+* Implement animation console.logic
     - Time handling (timer object, fixed FPS, global state?)
     - Create physics objects (encapsulating state)
     - Acceleration, impacts, forces
     - Jumping
 
-* Implement input logic
+* Implement input console.logic
     - WASD for moving around
     - Mouse for looking around
     - Space for jumping
