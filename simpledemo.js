@@ -104,10 +104,10 @@ function createScene(context) {
 		left:   palette.purple,
 		right:  palette.darkkhaki }), [0, 0, -0.14], [0, 0, 0]);
 
-	var scene = [new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: yellow  }),
-	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: purple  }),
-	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: square  }),
-	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: cube    }),
+	var scene = [new Entity({ mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: yellow }),
+	             new Entity({ mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: purple }),
+	             new Entity({ mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: square }),
+	             new Entity({ mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: cube   }),
 	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: sphere }),
 	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: box     }),
 	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: pyramid  })];
