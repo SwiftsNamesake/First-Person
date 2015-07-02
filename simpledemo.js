@@ -115,7 +115,7 @@ function createScene(context) {
 	var path = 'https://swiftsnamesake.github.io/data/models/';
 	WaveFront.loadMeshes(context, path + 'king.obj', path).then(function(meshes) {
 		console.log('Adding model');
-		scene.push(new Entity({mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [2,0,0], rotation: [0,0,0], mesh: meshes  });
+		scene.push(new Entity({mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [2,0,0], rotation: [0,0,0], mesh: meshes  }));
 	});
 
 	return scene;
