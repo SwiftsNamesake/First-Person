@@ -113,9 +113,10 @@ function createScene(context) {
 	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: pyramid  })];
 
 	var path = 'https://swiftsnamesake.github.io/data/models/';
-	WaveFront.loadMeshes(context, path + 'king.obj', path).then(function(meshes) {
+	WaveFront.loadMeshes(context, path + 'king.obj', path).then(function(mesh) {
 		console.log('Adding model');
-		scene.push(new Entity({mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [2,0,0], rotation: [0,0,0], mesh: meshes  }));
+		console.log(mesh);
+		scene.push(new Entity({mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [2,0,0], rotation: [0,0,0], mesh: mesh  }));
 	});
 
 	return scene;
