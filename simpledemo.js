@@ -17,7 +17,11 @@
 
 
 
-$(document).ready(function() {
+$(document).ready(main);
+
+
+
+function main() {
 
 	//
 	var canvas  = $('#cvs')[0];
@@ -31,7 +35,8 @@ $(document).ready(function() {
 	var ui    = attachListeners(context, scene); //
 	// this.scene = scene;
 
-	window.scene = scene;
+	main.scene   = scene;
+	main.context = context;
 
 	context.loadShaders({ vertex: 'shaders/vertexshader.txt', pixel: 'shaders/pixelshader.txt' }).then(function(context) {
 
@@ -43,7 +48,7 @@ $(document).ready(function() {
 
 	});
 
-});
+}
 
 
 
