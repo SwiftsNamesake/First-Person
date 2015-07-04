@@ -53,12 +53,25 @@ function main() {
 
 function attachListeners(context, scene) {
 
-	// Mouse
-	$(document).mousemove(function(e) {
-		scene[2].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
+	// Model dropdown
+	var selected = 0;
+	var modelDropdown = $('#models');
+
+	modelDropdown.change(function(event) {
+		selected = selected === 0 ? 1 : 0; // TODO: This is fragile
 	});
 
-	// Dropdown
+	modelDropdown.append('<option value="' + 'king' + '">' + 'king' + '</option>');
+	modelDropdown.append('<option value="' + 'villa' + '">' + 'villa' + '</option>');
+
+
+	// Mouse
+	$(document).mousemove(function(e) {
+		scene[selected].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
+	});
+
+
+	// Mesh dropdown
 	var dropdown = $('#shapes');
 	var solids = {
 		cube     : new Mesh(context, shapes.cube(1.8)),
