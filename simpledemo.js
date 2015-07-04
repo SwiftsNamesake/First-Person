@@ -120,7 +120,7 @@ function createScene(context) {
 		WaveFront.loadMeshes(context, path + model, path).then(function(mesh) {
 			console.log('Adding model');
 			console.log(mesh);
-			scene.push(new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,-2], rotation: [0,0,0], mesh: mesh }));
+			scene.push(new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [0,-2,-5], rotation: [π/2,0,0], mesh: mesh }));
 		});
 	}
 
