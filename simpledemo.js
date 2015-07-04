@@ -32,7 +32,7 @@ function main() {
 	var projection = mat4.create(); //
 	
 	var scene = createScene(context);            //
-	var ui    = attachListeners(context, scene); //
+	// var ui    = attachListeners(context, scene); //
 
 	main.scene   = scene;
 	main.context = context;
