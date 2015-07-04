@@ -73,7 +73,7 @@ function attachListeners(context, scene) {
 										position:     [0, 0,-3],
 										rotation:     [0, 0, 0],
 										mesh:         solids['cube'] })) - 1;
-
+	scene.pop();
 	function shapeSelected(event) {
 		// TODO: It seems I still haven't solved the body/mesh syncing problem... (✓)
 		scene[index].mesh = solids[event.target.value];
