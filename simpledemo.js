@@ -70,7 +70,8 @@ function attachListeners(context, scene) {
 		scene[selected].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
 	});
 
-
+	return;
+	
 	// Mesh dropdown
 	var dropdown = $('#shapes');
 	var solids = {
