@@ -55,9 +55,9 @@ function attachListeners(context, scene) {
 
 	// Mouse
 	$(document).mousemove(function(e) {
-		scene[1].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
+		scene[2].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
 	});
-	
+
 	// Dropdown
 	var dropdown = $('#shapes');
 	var solids = {
