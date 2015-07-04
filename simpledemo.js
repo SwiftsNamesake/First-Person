@@ -84,7 +84,7 @@ function attachListeners(context, scene) {
 
 	// Mouse
 	$(document).mousemove(function(e) {
-		scene[2].body.r = [π*e.pageY/document.body.clientHeight, π*e.pageX/document.body.clientHeight, 0.0];
+		scene[2].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
 	});
 
 
