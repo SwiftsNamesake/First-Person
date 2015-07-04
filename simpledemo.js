@@ -54,7 +54,7 @@ function main() {
 
 function attachListeners(context, scene) {
 
-	//
+	// Dropdown
 	var dropdown = $('#shapes');
 	var solids = {
 		cube     : new Mesh(context, shapes.cube(1.8)),
@@ -74,12 +74,19 @@ function attachListeners(context, scene) {
 										rotation:     [0, 0, 0],
 										mesh:         solids['cube'] })) - 1;
 	scene.pop();
+
 	function shapeSelected(event) {
 		// TODO: It seems I still haven't solved the body/mesh syncing problem... (✓)
 		scene[index].mesh = solids[event.target.value];
 	}
 
 	dropdown.change(shapeSelected);
+
+	// Mouse
+	$(document).mousemove(function(e) {
+		scene[2].body.r = [π*e.pageY/document.body.clientHeight, π*e.pageX/document.body.clientHeight, 0.0];
+	});
+
 
 }
 
