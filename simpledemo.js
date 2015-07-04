@@ -33,7 +33,6 @@ function main() {
 	
 	var scene = createScene(context);            //
 	var ui    = attachListeners(context, scene); //
-	// this.scene = scene;
 
 	main.scene   = scene;
 	main.context = context;
@@ -84,7 +83,7 @@ function attachListeners(context, scene) {
 
 	// Mouse
 	$(document).mousemove(function(e) {
-		scene[2].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
+		scene[1].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
 	});
 
 
