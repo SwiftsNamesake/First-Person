@@ -59,6 +59,7 @@ function attachListeners(context, scene) {
 
 	modelDropdown.change(function(event) {
 		selected = modelDropdown.prop('selectedIndex'); // TODO: This is fragile
+		console.log('Selected model index: ', selected);
 	});
 
 	modelDropdown.append('<option value="' + 'king'  + '">' + 'king'  + '</option>');
