@@ -32,7 +32,7 @@ function main() {
 	var projection = mat4.create(); //
 	
 	var scene = createScene(context);            //
-	// var ui    = attachListeners(context, scene); //
+	var ui    = attachListeners(context, scene); //
 
 	main.scene   = scene;
 	main.context = context;
@@ -58,16 +58,17 @@ function attachListeners(context, scene) {
 	var modelDropdown = $('#models');
 
 	modelDropdown.change(function(event) {
-		selected = selected === 0 ? 1 : 0; // TODO: This is fragile
+		selected = modelDropdown.prop('selectedIndex'); // TODO: This is fragile
 	});
 
-	modelDropdown.append('<option value="' + 'king' + '">' + 'king' + '</option>');
+	modelDropdown.append('<option value="' + 'king'  + '">' + 'king'  + '</option>');
 	modelDropdown.append('<option value="' + 'villa' + '">' + 'villa' + '</option>');
-
+	modelDropdown.append('<option value="' + 'cubes' + '">' + 'cubes' + '</option>');
 
 	// Mouse
-	$(document).mousemove(function(e) {
-		scene[selected].body.r = [π*e.pageY/$(window).width(), π*e.pageX/$(window).height(), 0.0];
+	$('#cvs').mousemove(function(e) {
+		var offset = $(this).parent().offset();
+		scene[selected].body.r = [π*(e.pageY-offset.top)/$(window).width(), π*(e.pageX-offset.left)/$(window).height(), 0.0];
 	});
 
 	return;
@@ -85,11 +86,11 @@ function attachListeners(context, scene) {
 
 	Object.keys(solids).map(function(shape) { dropdown.append('<option value="' + shape + '">' + shape + '</option>'); });
 	var index = scene.push(new Entity({	mass:         1.0,
-										velocity:     [0,0,0],
-										acceleration: [0,0,0],
-										angular:      [0,2,0],
-										position:     [0, 0,-3],
-										rotation:     [0, 0, 0],
+										velocity:     [0, 0,  0],
+										acceleration: [0, 0,  0],
+										angular:      [0, 2,  0],
+										position:     [0, 0, -3],
+										rotation:     [0, 0,  0],
 										mesh:         solids['cube'] })) - 1;
 	scene.pop();
 
@@ -135,7 +136,7 @@ function createScene(context) {
 
 	var path = 'https://swiftsnamesake.github.io/data/models/';
 
-	for (var model of ['king.obj', 'villa.obj']) {
+	for (var model of ['king.obj', 'villa.obj', 'OBJTest2.obj']) {
 		WaveFront.loadMeshes(context, path + model, path).then(function(mesh) {
 			console.log('Adding model');
 			console.log(mesh);
