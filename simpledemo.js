@@ -113,9 +113,8 @@ function createScene(context) {
 	var purple  = new Mesh(context, shapes.monochrome([[-1.00,  0.00,  0.00], [0.00, -2.00, -0.58], [1.00, 0.00, 0.00]], palette.deeppink));
 	var square  = new Mesh(context, shapes.rectangle(1.0, 1.0, [1.00, 0.52, 0.13, 1.00]));
 
-	// var box     = new Mesh(context, shapes.box(1.2, 2.2, 0.2, undefined));
-	var box, sphere;
-	// var sphere  = new Mesh(context, shapes.sphere(3.2, [0.20, 0.00, 0.95, 1.00]));
+	var box     = new Mesh(context, shapes.box(1.2, 2.2, 0.2, undefined));
+	var sphere  = new Mesh(context, shapes.sphere(3.2, [0.20, 0.00, 0.95, 1.00]));
 	var pyramid = new Mesh(context, shapes.pyramid(0.3, 1.2, 3.2, undefined));
 
 	var cube = new Mesh(context, shapes.cube(0.35, {
