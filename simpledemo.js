@@ -72,7 +72,7 @@ function attachListeners(context, scene) {
 	for (var model of ['king.obj', 'villa.obj', 'OBJTest2.obj']) {
 		var path = 'https://swiftsnamesake.github.io/data/models/';
 		WaveFront.loadMeshes(context, path + model, path).then(function(mesh) {
-			solids[model] = new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [0,-2,-5], rotation: [π/2,0,0], mesh: mesh });
+			solids[model] = mesh;
 			dropdown.append('<option value="' + model + '">' + model + '</option>');
 		});
 	}
