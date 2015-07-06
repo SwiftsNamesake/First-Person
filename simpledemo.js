@@ -60,8 +60,6 @@ function attachListeners(context, scene) {
 		var offset = $(this).parent().offset();
 		scene[selected].body.r = [π*(e.pageY-offset.top)/$(this).width(), π*(e.pageX-offset.left)/$(this).height(), 0.0];
 	});
-
-	return;
 	
 	// Mesh dropdown
 	var dropdown = $('#shapes');
