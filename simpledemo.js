@@ -74,7 +74,7 @@ function attachListeners(context, scene) {
 		var name = model.replace('.obj', '');
 		WaveFront.loadMeshes(context, path + model, path).then(function(mesh) {
 			solids[name] = mesh;
-			dropdown.append('<option value="' + model + '">' + model + '</option>');
+			dropdown.append('<option value="' + name + '">' + name + '</option>');
 		});
 	}
 
