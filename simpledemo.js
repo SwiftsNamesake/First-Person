@@ -53,23 +53,12 @@ function main() {
 
 function attachListeners(context, scene) {
 
-	// Model dropdown
-	var selected = 0;
-	var modelDropdown = $('#models');
-
-	modelDropdown.change(function(event) {
-		selected = modelDropdown.prop('selectedIndex'); // TODO: This is fragile
-		console.log('Selected model index: ', selected);
-	});
-
-	modelDropdown.append('<option value="' + 'king'  + '">' + 'king'  + '</option>');
-	modelDropdown.append('<option value="' + 'villa' + '">' + 'villa' + '</option>');
-	modelDropdown.append('<option value="' + 'cubes' + '">' + 'cubes' + '</option>');
+	//
 
 	// Mouse
 	$('#cvs').mousemove(function(e) {
 		var offset = $(this).parent().offset();
-		scene[selected].body.r = [π*(e.pageY-offset.top)/$(window).width(), π*(e.pageX-offset.left)/$(window).height(), 0.0];
+		scene[selected].body.r = [π*(e.pageY-offset.top)/$(this).width(), π*(e.pageX-offset.left)/$(this).height(), 0.0];
 	});
 
 	return;
@@ -86,6 +75,15 @@ function attachListeners(context, scene) {
 	};
 
 	Object.keys(solids).map(function(shape) { dropdown.append('<option value="' + shape + '">' + shape + '</option>'); });
+	
+
+	for (var model of ['king.obj', 'villa.obj', 'OBJTest2.obj']) {
+		var path = 'https://swiftsnamesake.github.io/data/models/';
+		WaveFront.loadMeshes(context, path + model, path).then(function(mesh) {
+			solids[model] = new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [0,-2,-5], rotation: [π/2,0,0], mesh: mesh });
+		});
+	}
+
 	var index = scene.push(new Entity({	mass:         1.0,
 										velocity:     [0, 0,  0],
 										acceleration: [0, 0,  0],
@@ -132,19 +130,6 @@ function createScene(context) {
 	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: sphere }),
 	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: box     }),
 	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: pyramid  })];
-	
-	var scene = [];
-
-	var path = 'https://swiftsnamesake.github.io/data/models/';
-
-	for (var model of ['king.obj', 'villa.obj', 'OBJTest2.obj']) {
-		WaveFront.loadMeshes(context, path + model, path).then(function(mesh) {
-			console.log('Adding model');
-			console.log(mesh);
-			scene.push(new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,0,0], position: [0,-2,-5], rotation: [π/2,0,0], mesh: mesh }));
-		});
-	}
-
 
 	return scene;
 
