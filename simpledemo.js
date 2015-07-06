@@ -54,12 +54,6 @@ function main() {
 function attachListeners(context, scene) {
 
 	//
-
-	// Mouse
-	$('#cvs').mousemove(function(e) {
-		var offset = $(this).parent().offset();
-		scene[selected].body.r = [π*(e.pageY-offset.top)/$(this).width(), π*(e.pageX-offset.left)/$(this).height(), 0.0];
-	});
 	
 	// Mesh dropdown
 	var dropdown = $('#shapes');
@@ -97,6 +91,12 @@ function attachListeners(context, scene) {
 	}
 
 	dropdown.change(shapeSelected);
+
+	// Mouse
+	$('#cvs').mousemove(function(e) {
+		var offset = $(this).parent().offset();
+		scene[index].body.r = [π*(e.pageY-offset.top)/$(this).width(), π*(e.pageX-offset.left)/$(this).height(), 0.0];
+	});
 
 }
 
