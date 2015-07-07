@@ -37,7 +37,7 @@ function main() {
 	main.scene   = scene;
 	main.context = context;
 
-	var shaderpath = 'https://swiftsnamesake.github.io/data/shaders';
+	var shaderpath = 'https://swiftsnamesake.github.io/data/shaders/';
 	context.loadShaders({ vertex: shaderpath + 'vertexshader.txt', pixel: shaderpath + 'shaders/pixelshader.txt' }).then(function(context) {
 
 		var tick    = function(dt) { scene.map(function(entity) { entity.animate(dt); }); }
