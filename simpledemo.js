@@ -37,7 +37,8 @@ function main() {
 	main.scene   = scene;
 	main.context = context;
 
-	context.loadShaders({ vertex: 'shaders/vertexshader.txt', pixel: 'shaders/pixelshader.txt' }).then(function(context) {
+	var shaderpath = 'https://swiftsnamesake.github.io/data/shaders';
+	context.loadShaders({ vertex: shaderpath + 'vertexshader.txt', pixel: shaderpath + 'shaders/pixelshader.txt' }).then(function(context) {
 
 		var tick    = function(dt) { scene.map(function(entity) { entity.animate(dt); }); }
 		var render  = createRenderer(context, scene, modelview, projection);

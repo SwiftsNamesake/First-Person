@@ -42,7 +42,8 @@ function main() {
 	var projection = mat4.create(); // Perspective matrix
 	var modelview  = mat4.create();	// Model-view matrix
 
-	context.loadShaders({ vertex: 'shaders/vertexshader.txt', pixel: 'shaders/pixelshader.txt' }).then(function(context) {
+	var shaderpath = 'https://swiftsnamesake.github.io/data/shaders';
+	context.loadShaders({ vertex: shaderpath+'shaders/vertexshader.txt', pixel: shaderpath+'shaders/pixelshader.txt' }).then(function(context) {
 
 		var scene = InitWorld(context);    // 
 		InitUserInterface(context, scene); // 
