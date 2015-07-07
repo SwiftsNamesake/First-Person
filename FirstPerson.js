@@ -43,7 +43,7 @@ function main() {
 	var modelview  = mat4.create();	// Model-view matrix
 
 	var shaderpath = 'https://swiftsnamesake.github.io/data/shaders';
-	context.loadShaders({ vertex: shaderpath+'shaders/vertexshader.txt', pixel: shaderpath+'shaders/pixelshader.txt' }).then(function(context) {
+	context.loadShaders({ vertex: shaderpath+'vertexshader.txt', pixel: shaderpath+'pixelshader.txt' }).then(function(context) {
 
 		var scene = InitWorld(context);    // 
 		InitUserInterface(context, scene); // 
