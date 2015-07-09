@@ -113,9 +113,9 @@ function createScene(context) {
 	var purple  = new Mesh(context, shapes.monochrome([[-1.00,  0.00,  0.00], [0.00, -2.00, -0.58], [1.00, 0.00, 0.00]], [[1,0,0],[1,0,0],[1,0,0]], palette.deeppink), 'purple');
 	var square  = new Mesh(context, shapes.rectangle(1.0, 1.0, [1.00, 0.52, 0.13, 1.00]), 'square');
 
-	var box     = new Mesh(context, shapes.box(1.2, 2.2, 0.2, undefined));
-	var sphere  = new Mesh(context, shapes.sphere(3.2, [0.20, 0.00, 0.95, 1.00]));
-	var pyramid = new Mesh(context, shapes.pyramid(0.3, 1.2, 3.2, undefined));
+	var box     = new Mesh(context, shapes.box(1.2, 2.2, 0.2, undefined), 'box');
+	var sphere  = new Mesh(context, shapes.sphere(3.2, [0.20, 0.00, 0.95, 1.00]), 'sphere');
+	var pyramid = new Mesh(context, shapes.pyramid(0.3, 1.2, 3.2, undefined), 'pyramid');
 
 	var cube = new Mesh(context, shapes.cube(0.32, {
 		top:    palette.orange,
@@ -123,7 +123,7 @@ function createScene(context) {
 		front:  palette.black,
 		back:   palette.chartreuse,
 		left:   palette.purple,
-		right:  palette.darkkhaki }));
+		right:  palette.darkkhaki }), 'cube');
 
 	var scene = [new Entity({ mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: yellow }),
 	             new Entity({ mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: purple }),
