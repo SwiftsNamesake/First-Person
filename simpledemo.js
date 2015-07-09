@@ -117,7 +117,7 @@ function createScene(context) {
 	var sphere  = new Mesh(context, shapes.sphere(3.2, [0.20, 0.00, 0.95, 1.00]));
 	var pyramid = new Mesh(context, shapes.pyramid(0.3, 1.2, 3.2, undefined));
 
-	var cube = new Mesh(context, shapes.cube(0.35, {
+	var cube = new Mesh(context, shapes.cube(0.32, {
 		top:    palette.orange,
 		bottom: palette.darkred,
 		front:  palette.black,
