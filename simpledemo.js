@@ -69,7 +69,7 @@ function attachListeners(context, scene) {
 
 	Object.keys(solids).map(function(shape) { dropdown.append('<option value="' + shape + '">' + shape + '</option>'); });
 
-	for (var model of ['king.obj', 'villa.obj', 'OBJTest2.obj']) {
+	for (var model of ['king.obj', 'villa.obj', 'OBJTest2.obj', 'minecraft/minecraft1.obj']) {
 		(function(model) {
 			var path = 'https://swiftsnamesake.github.io/data/models/';
 			var name = model.replace('.obj', '');
