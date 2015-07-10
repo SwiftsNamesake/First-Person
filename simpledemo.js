@@ -41,7 +41,7 @@ function main() {
 	context.loadShaders({ vertex: shaderpath + 'phong-vertex.txt', pixel: shaderpath + 'phong-pixel.txt' }).then(function(context) {
 
 		var tick    = function(dt) { scene.map(function(entity) { entity.animate(dt); }); }
-		var render  = createRenderer(context, scene, modelview, projection);
+		var render  = createRenderer(context, scene, { modelview: modelview, projection: projection});
 		var animate = createAnimator(tick, render);
 
 		requestAnimationFrame(animate);
@@ -68,7 +68,6 @@ function attachListeners(context, scene) {
 	};
 
 	Object.keys(solids).map(function(shape) { dropdown.append('<option value="' + shape + '">' + shape + '</option>'); });
-	
 
 	for (var model of ['king.obj', 'villa.obj', 'OBJTest2.obj']) {
 		(function(model) {
@@ -133,8 +132,8 @@ function createScene(context) {
 	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: box     }),
 	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: pyramid  })];
 
-	scene.camera = new Camera();
-	
+	scene.uniforms = { camera: new Camera(), light: [1.0, 3.0, 1.0] }
+
 	return scene;
 
 	
@@ -163,16 +162,17 @@ function createAnimator(tick, render) {
 
 
 
-function createRenderer(context, scene, modelviewMatrix, projectionMatrix) {
+function createRenderer(context, scene, uniforms) {
 
 	//
+	$.extend(uniforms, scene.uniforms); //
 
 	var render = function(time) {
 
 		// 
 		// console.log('Rendering...');
-		context.clear(modelviewMatrix, projectionMatrix); // Clear the frame and reset matrices
-		scene.map(function(entity) { entity.render(scene.camera, modelviewMatrix, projectionMatrix); }); // Draw stuff
+		context.clear(uniforms.modelview, uniformsprojection);    // Clear the frame and reset matrices
+		scene.map(function(entity) { entity.render(uniforms); }); // Draw stuff
 
 	};
 
