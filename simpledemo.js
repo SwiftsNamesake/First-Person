@@ -171,7 +171,7 @@ function createRenderer(context, scene, uniforms) {
 
 		// 
 		// console.log('Rendering...');
-		context.clear(uniforms.modelview, uniformsprojection);    // Clear the frame and reset matrices
+		context.clear(uniforms.modelview, uniforms.projection);   // Clear the frame and reset matrices
 		scene.map(function(entity) { entity.render(uniforms); }); // Draw stuff
 
 	};
