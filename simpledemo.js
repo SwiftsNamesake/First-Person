@@ -102,7 +102,7 @@ function attachListeners(context, scene) {
 	});
 
 	// Arrow navigation
-	$('#cvs').keydown(function(e) {
+	$(document).keydown(function(e) {
 		var delta = 0.05;
 		if (e.which === KeyEvent.DOM_VK_LEFT) {
 			scene[index].body.p[0] -= delta;
