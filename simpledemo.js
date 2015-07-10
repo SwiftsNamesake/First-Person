@@ -190,7 +190,7 @@ function createRenderer(context, scene, uniforms) {
 		context.clear(uniforms.modelview, uniforms.projection);   // Clear the frame and reset matrices
 		scene.map(function(entity) {
 			// Draw stuff
-			uniforms.texture = entity.mesh.textures[0]||null;
+			uniforms.texture = (entity.mesh.textures||[null])[0];
 			entity.render(uniforms);
 		});
 
