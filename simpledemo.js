@@ -83,7 +83,7 @@ function attachListeners(context, scene) {
 	var index = scene.push(new Entity({	mass:         1.0,
 										velocity:     [0, 0,  0],
 										acceleration: [0, 0,  0],
-										angular:      [0, 2,  0],
+										angular:      [0, 0,  0],
 										position:     [0, 0, -3],
 										rotation:     [0, 0,  0],
 										mesh:         solids['cube'] })) - 1;
