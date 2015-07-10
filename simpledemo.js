@@ -34,6 +34,7 @@ function main() {
 	var scene = createScene(context);            //
 	var ui    = attachListeners(context, scene); //
 
+	scene.camera = new Camera();
 	main.scene   = scene;
 	main.context = context;
 
@@ -170,7 +171,7 @@ function createRenderer(context, scene, modelviewMatrix, projectionMatrix) {
 		// 
 		// console.log('Rendering...');
 		context.clear(modelviewMatrix, projectionMatrix); // Clear the frame and reset matrices
-		scene.map(function(entity) { entity.render(modelviewMatrix, projectionMatrix); }); // Draw stuff
+		scene.map(function(entity) { entity.render(scene.camera, modelviewMatrix, projectionMatrix); }); // Draw stuff
 
 	};
 
