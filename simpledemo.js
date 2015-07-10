@@ -103,14 +103,15 @@ function attachListeners(context, scene) {
 
 	// Arrow navigation
 	$('#cvs').keydown(function(e) {
-		if (e.which === keycodes.DOM_VK_LEFT) {
-			scene[index].body.p[0] -= 0.05
-		} else if (e.which === keycodes.DOM_VK_RIGHT) {
-			scene[index].body.p[0] += 0.05
-		} else if (e.which === keycodes.DOM_VK_UP) {
-			scene[index].body.p[1] += 0.05
-		} else if (e.which === keycodes.DOM_VK_DOWN) {
-			scene[index].body.p[1] -= 0.05
+		var delta = 0.05;
+		if (e.which === KeyEvent.DOM_VK_LEFT) {
+			scene[index].body.p[0] -= delta;
+		} else if (e.which === KeyEvent.DOM_VK_RIGHT) {
+			scene[index].body.p[0] += delta;
+		} else if (e.which === KeyEvent.DOM_VK_UP) {
+			scene[index].body.p[1] += delta;
+		} else if (e.which === KeyEvent.DOM_VK_DOWN) {
+			scene[index].body.p[1] -= delta;
 		}
 	});
 
