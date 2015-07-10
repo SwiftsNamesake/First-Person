@@ -185,8 +185,14 @@ function createRenderer(context, scene, uniforms) {
 
 		// 
 		// console.log('Rendering...');
+		// TODO: Who should be responsible for setting the texture (?)
+
 		context.clear(uniforms.modelview, uniforms.projection);   // Clear the frame and reset matrices
-		scene.map(function(entity) { entity.render(uniforms); }); // Draw stuff
+		scene.map(function(entity) {
+			// Draw stuff
+			uniforms.texture = entity.mesh.textures[0]||null;
+			entity.render(uniforms);
+		});
 
 	};
 
