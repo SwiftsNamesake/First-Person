@@ -34,7 +34,6 @@ function main() {
 	var scene = createScene(context);            //
 	var ui    = attachListeners(context, scene); //
 
-	scene.camera = new Camera();
 	main.scene   = scene;
 	main.context = context;
 
@@ -134,6 +133,8 @@ function createScene(context) {
 	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: box     }),
 	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: pyramid  })];
 
+	scene.camera = new Camera();
+	
 	return scene;
 
 	
