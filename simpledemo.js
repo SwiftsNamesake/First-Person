@@ -98,7 +98,7 @@ function attachListeners(context, scene) {
 	// Mouse
 	$('#cvs').mousemove(function(e) {
 		var offset = $(this).parent().offset();
-		scene.uniforms.camera.rotation = [π*(e.pageY-offset.top)/$(this).width(), π*(e.pageX-offset.left)/$(this).height(), 0.0];
+		scene.uniforms.camera.rotation = [2*π*(e.pageY-offset.top)/$(this).width(), 2*π*(e.pageX-offset.left)/$(this).height(), 0.0];
 	});
 
 	// Arrow navigation
