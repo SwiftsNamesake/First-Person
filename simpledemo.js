@@ -98,7 +98,7 @@ function attachListeners(context, scene) {
 	// Mouse
 	$('#cvs').mousemove(function(e) {
 		var offset = $(this).parent().offset();
-		scene.uniforms.camera.rotation = [2*π*(e.pageY-offset.top)/$(this).width(), 2*π*(e.pageX-offset.left)/$(this).height(), 0.0];
+		scene.uniforms.camera.rotation = [4*π*(e.pageY-offset.top)/$(this).width(), 4*π*(e.pageX-offset.left)/$(this).height(), 0.0];
 	});
 
 	// Arrow navigation
@@ -109,9 +109,9 @@ function attachListeners(context, scene) {
 		} else if (e.which === KeyEvent.DOM_VK_RIGHT) {
 			scene[index].body.p[0] += delta;
 		} else if (e.which === KeyEvent.DOM_VK_UP) {
-			scene[index].body.p[1] += delta;
+			scene[index].body.p[2] += delta;
 		} else if (e.which === KeyEvent.DOM_VK_DOWN) {
-			scene[index].body.p[1] -= delta;
+			scene[index].body.p[2] -= delta;
 		}
 	});
 
