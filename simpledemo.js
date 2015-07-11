@@ -40,7 +40,13 @@ function main() {
 	var shaderpath = 'https://swiftsnamesake.github.io/data/shaders/';
 	context.loadShaders({ vertex: shaderpath + 'phong-vertex.txt', pixel: shaderpath + 'phong-pixel.txt' }).then(function(context) {
 
-		var tick    = function(dt) { scene.map(function(entity) { entity.animate(dt); }); }
+		var tick = function(dt, frame) {
+			var π = Math.pi; //
+			var ω = π;       // Radians per second
+			scene.light = [3*Math.cos(dt*frame*ω/(2*π)), 20, 3*Math.sin(dt*frame*ω/(2*π))];
+			scene.map(function(entity) { entity.animate(dt); });
+		}
+
 		var render  = createRenderer(context, scene, { modelview: modelview, projection: projection});
 		var animate = createAnimator(tick, render);
 
@@ -164,14 +170,16 @@ function createAnimator(tick, render) {
 	//
 	// NOTE: Animate should not be called directly (invoke it via requestAnimationFrame)
 	var clock = undefined;
+	var frame = 0;
 
 	function animate(time) {
 		// TODO: Move scene updates to separate function (✓)
 		var dt = (time-(clock || time))*0.001; // Time delta (seconds)
-		tick(dt);                              //
+		tick(dt, frame);                       //
 		render();                              //
 		requestAnimationFrame(animate);        // Schedule the next frame
 		clock = time;                          // 
+		frame++;
 	}
 
 	return animate;
