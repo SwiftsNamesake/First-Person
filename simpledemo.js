@@ -158,7 +158,7 @@ function createScene(context) {
 
 	var light = [1.0, 25.0, 1.0];
 	var orb   = new Mesh(context, shapes.sphere(3), 'orb');
-	var scene.orbindex = scene.push(new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,2,0], position: light, rotation: [0,0,0], mesh: orb })) - 1;
+	scene.orbindex = scene.push(new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,2,0], position: light, rotation: [0,0,0], mesh: orb })) - 1;
 
 	scene.uniforms = { camera: new Camera(), light: light };
 
