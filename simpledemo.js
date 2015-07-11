@@ -43,7 +43,7 @@ function main() {
 		var tick = function(dt, frame) {
 			var π = Math.pi; //
 			var ω = π;       // Radians per second
-			scene.light = [3*Math.cos(dt*frame*ω/(2*π)), 20, 3*Math.sin(dt*frame*ω/(2*π))];
+			scene.uniforms.light = [3*Math.cos(dt*frame*ω/(2*π)), 20, 3*Math.sin(dt*frame*ω/(2*π))];
 			scene.map(function(entity) { entity.animate(dt); });
 		}
 
