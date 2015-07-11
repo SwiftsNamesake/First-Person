@@ -146,7 +146,10 @@ function createScene(context) {
 	             // new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: box     }),
 	             new Entity({mass: 1.0, velocity: [0,0,-0.8], acceleration: [0,0,0], angular: [0,0,0], position: [0,0,0], rotation: [0,0,0], mesh: pyramid  })];
 
-	scene.uniforms = { camera: new Camera(), light: [1.0, 10.0, 1.0] };
+	var light = [1.0, 10.0, 1.0];
+	scene.push(new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,2,0], position: [0,0,0], rotation: [0,0,0], mesh: _ }));
+
+	scene.uniforms = { camera: new Camera(), light: light };
 
 	return scene;
 
