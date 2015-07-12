@@ -50,7 +50,7 @@ function main() {
 			                        [ 5, 30,  5],
 			                        [-5, 30,  5]][Math.floor(frame/100)%4];
 
-			scene[scene.orbindex].body.p = [scene.uniforms.light[0], scene.uniforms.light[1]+3, scene.uniforms.light[2]];
+			scene[scene.orbindex].body.p = [scene.uniforms.light[0], scene.uniforms.light[1]-5, scene.uniforms.light[2]];
 			// console.log(scene.uniforms.light, π, ω, dt, frame);
 			// console.log(dt, frame, dt*frame),
 			scene.map(function(entity) { entity.animate(dt); });
