@@ -8,7 +8,7 @@
 
  * TODO | - Progress bars (eg. for shaders and assets) (?)
  *        - Animation, proper way of dealing with state and time (cf. FirstPerson.js for an example)
- *        - 
+ *        - Cookies, remember users, state
 
  * SPEC | -
  *        -
@@ -24,15 +24,16 @@ $(document).ready(main);
 function main() {
 
 	//
+	if (5 == '3') { console.log('Lint me'); }
 	var canvas  = $('#cvs')[0];
 	var context = new Context3D(canvas);
 
 	// Let the context manage the matrices for us (?)
-	var modelview  = mat4.create(); //
-	var projection = mat4.create(); //
+	var modelview  = mat4.create(); // 
+	var projection = mat4.create(); // 
 	
-	var scene = createScene(context);            //
-	var ui    = attachListeners(context, scene); //
+	var scene = createScene(context);            // 
+	var ui    = attachListeners(context, scene); // 
 
 	main.scene   = scene;
 	main.context = context;
@@ -42,7 +43,7 @@ function main() {
 
 		var tick = function(dt, frame) {
 			var π = Math.PI; //
-			var ω = π/4;       // Radians per second
+			var ω = π/4;     // Radians per second
 			// scene.uniforms.light = [5*Math.cos(dt*frame*ω/(2*π)), 20, 5*Math.sin(dt*frame*ω/(2*π))];
 			// scene.uniforms.light = [(dt*frame)%100, 17, 0];
 			scene.uniforms.light = [[-5, 30, -5],
@@ -51,10 +52,10 @@ function main() {
 			                        [-5, 30,  5]][Math.floor(frame/100)%4];
 
 			scene[scene.orbindex].body.p = [scene.uniforms.light[0], scene.uniforms.light[1]-5, scene.uniforms.light[2]];
-			// console.log(scene.uniforms.light, π, ω, dt, frame);
+			// console.log(scene.uniforms.light, p, w, dt, frame);
 			// console.log(dt, frame, dt*frame),
 			scene.map(function(entity) { entity.animate(dt); });
-		}
+		};
 
 		var render  = createRenderer(context, scene, { modelview: modelview, projection: projection});
 		var animate = createAnimator(tick, render);
@@ -137,16 +138,16 @@ function attachListeners(context, scene) {
 function createScene(context) {
 
 	//
-	var scene = [];
 
-	var light = [1.0, 25.0, 1.0];
-	var orb   = new Mesh(context, shapes.sphere(3), 'orb');
-	scene.orbindex = scene.push(new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,2,0], position: light, rotation: [0,0,0], mesh: orb })) - 1;
+	var light = [1.0, 5.0, 1.0];
+	var orb   = new Mesh(context, shapes.cube(5), 'orb');
+	var scene = [new Entity({ mass: 1.0, velocity: [0,0,0], acceleration: [0,0,0], angular: [0,2,0], position: [4.2,5,3], rotation: [0,0,0], mesh: orb })];
+
+	scene.orbindex = scene.push(new Entity({ mass: 1.0, velocity: [0,1,0], acceleration: [0,0,0], angular: [0,2,0], position: light, rotation: [0,0,0], mesh: orb })) - 1;
 
 	scene.uniforms = { camera: new Camera(), light: light };
 
 	return scene;
-
 	
 }
 
